@@ -1,46 +1,48 @@
-# IconForge — Нативный генератор иконок для Windows 11
+[ English ](README.md) • [ Русский ](README_RU.md) • [ Deutsch ](README_DE.md)
 
-**IconForge** — это легкое нативное Windows-приложение (утилита), разработанное на фреймворке **WinUI 3 (Windows App SDK)** и C#. Оно предназначено для пакетной генерации наборов иконок для Windows (`.ico`, `Assets`) и Android (`Adaptive Icons`) из одного исходного изображения (формата PNG или SVG).
-## Интерфейс приложения
+# IconForge Native icon generator for Windows 11
+
+**IconForge** is a lightweight native Windows application (utility) developed on the **WinUI 3 (Windows App SDK)** framework and C#. It is designed for batch generation of icon sets for Windows (`.ico`, `Assets`) and Android (`Adaptive Icons`) from a single source image (PNG or SVG format).
+## Application interface
 ---
 
-## Основные возможности
+## Main features
 
-### 📦 Генерация пакетов иконок
-* **Windows (Классический .ico):**
-  * Сборка мультиформатного `.ico` файла, содержащего разрешения: `16x16`, `24x24`, `32x32`, `48x48`, `64x64`, `128x128`, `256x256` пикселей.
-  * **Микро-шарпинг:** Для мелких размеров (16-48px) автоматически применяется специальный контурный фильтр резкости, чтобы иконка не "мылилась" в Проводнике.
+### Generating icon packs
+* **Windows (Classic .ico):**
+ * Build a multi-format `.ico` file containing resolutions: `16x16`, `24x24`, `32x32`, `48x48`, `64x64`, `128x128`, `256x256` pixels.
+ * **Micro-sharping:** For small sizes (16-48px), a special contour sharpening filter is automatically applied so that the icon does not become blurry in Explorer.
 * **Windows Modern Assets (PNG):**
-  * Экспорт отдельных изображений для манифеста современных Windows-приложений (`Square44x44Logo`, `Square150x150Logo`, `StoreLogo`) во всех системных масштабах: `scale-100`, `scale-125`, `scale-150`, `scale-200`, `scale-400`.
+ * Export individual images for the manifest of modern Windows applications (`Square44x44Logo`, `Square150x150Logo`, `StoreLogo`) at all system scales: `scale-100`, `scale-125`, `scale-150`, `scale-200`, `scale-400`.
 * **Android (Adaptive & Legacy Icons):**
-  * Разделение слоев: логотип автоматически позиционируется внутри безопасной зоны (safe-zone 72dp) слоя **Foreground.png**, а слой **Background.png** заливается выбранным цветом или текстурным файлом.
-  * Экспорт по структуре папок проекта (`mipmap-mdpi` до `mipmap-xxxhdpi`).
-  * Генерация круглой **Legacy-иконки** (`ic_launcher.png`) путем маскирования и наложения слоев.
-  * Экспорт промо-иконки для Google Play Console в размере `512x512` пикселей.
+ * Layer separation: the logo is automatically positioned inside the safe-zone 72dp of the **Foreground.png** layer, and the **Background.png** layer is filled with the selected color or texture file.
+ * Export by project folder structure (`mipmap-mdpi` to `mipmap-xxxhdpi`).
+ * Generate a round **Legacy icon** (`ic_launcher.png`) by masking and layering.
+ * Export promo icon for Google Play Console in size `512x512` pixels.
 
-### 🎨 Современный интерфейс Windows 11 (UI/UX)
-* Использование системного полупрозрачного материала **Mica Alt** (адаптируется под обои рабочего стола).
-* Полная поддержка системной Темной/Светлой темы Windows 11.
-* Интерактивная зона **Drag-and-Drop** с динамическим изменением цвета границ и встроенным превью для PNG/SVG файлов.
-* Быстрые палитры (свотчи) для выбора фонового цвета Android-иконки.
+### Modern Windows 11 interface (UI/UX)
+* Using the system translucent material **Mica Alt** (adapts to desktop wallpaper).
+* Full support for Windows 11 system Dark/Light theme.
+* Interactive **Drag-and-Drop** zone with dynamic border color changes and built-in preview for PNG/SVG files.
+* Quick palettes (swatches) for choosing the background color of an Android icon.
 
-### ⚙️ Системная интеграция (Shell Integration)
-* **Контекстное меню Проводника:** Опция встраивания пункта *"Сгенерировать иконки в IconForge"* прямо в меню проводника Windows при правом клике на PNG/SVG. Регистрация происходит локально в кусте `HKEY_CURRENT_USER` и **не требует прав администратора (UAC)**.
-* **Всплывающие уведомления (Toast):** По окончании работы приложение отправляет нативное всплывающее уведомление Windows 11 с интерактивной кнопкой «Открыть папку».
-
----
-
-## Стек технологий
-* **Язык:** C# (.NET 8.0)
-* **UI-платформа:** WinUI 3 (Windows App SDK 2.2.0)
-* **Графика:** SkiaSharp ( Lanczos3-ресайз и фильтрация) + Svg.Skia (отрисовка векторной графики в растр).
-* **Архитектурный тип:** Unpackaged Self-Contained (приложение поставляется со всеми библиотеками и работает без необходимости глобальной установки Windows App Runtime на компьютер пользователя).
+### ️ System Integration (Shell Integration)
+* **Explorer context menu:** Option to embed the *"Generate icons in IconForge"* item directly into the Windows Explorer menu when you right-click on PNG/SVG. Registration occurs locally in the `HKEY_CURRENT_USER` hive and **does not require administrator rights (UAC)**.
+* **Toast Notifications:** When the app is finished, it sends a native Windows 11 toast notification with an interactive Open Folder button.
 
 ---
 
-## Структура экспорта файлов
+## Technology stack
+* **Language:** C# (.NET 8.0)
+* **UI platform:** WinUI 3 (Windows App SDK 2.2.0)
+* **Graphics:** SkiaSharp (Lanczos3 resize and filtering) + Svg.Skia (rendering vector graphics to raster).
+* **Architectural type:** Unpackaged Self-Contained (the application comes with all libraries and runs without the need for a global installation of Windows App Runtime on the user's computer).
 
-После генерации в выбранной папке создается следующая структура каталогов:
+---
+
+## File export structure
+
+After generation, the following directory structure is created in the selected folder:
 
 ```text
 [Папка_Назначения]/
@@ -62,29 +64,29 @@
 
 ---
 
-## Как собрать и запустить
+## How to build and run
 
-### Требования
-* [.NET 8.0 SDK](https://dotnet.microsoft.com/download) или новее.
+### Requirements
+* [.NET 8.0 SDK](https://dotnet.microsoft.com/download) or later.
 
-### Сборка и запуск из консоли
-1. Клонируйте репозиторий:
+###Building and running from the console
+1. Clone the repository:
    ```bash
    git clone https://github.com/Almanex/icoboo.git
    cd icoboo
    ```
-2. Скомпилируйте проект:
+2. Compile the project:
    ```bash
    dotnet build
    ```
-3. Запустите приложение:
+3. Launch the application:
    ```bash
    dotnet run
    ```
 
-### Публикация (Self-Contained EXE)
-Для генерации единого исполняемого пакета (все зависимости будут скопированы в папку `publish`):
+### Publishing (Self-Contained EXE)
+To generate a single executable package (all dependencies will be copied to the `publish` folder):
 ```bash
 dotnet publish -c Release -r win-x64 --self-contained true
 ```
-После этого готовую программу можно запускать на любом компьютере с Windows 10/11 без предварительной установки каких-либо библиотек.
+After this, the finished program can be run on any computer with Windows 10/11 without first installing any libraries.
