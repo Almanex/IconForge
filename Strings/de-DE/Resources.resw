@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="0" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  
+  <data name="AppTitle" xml:space="preserve">
+    <value>IconForge</value>
+  </data>
+  <data name="AppSubtitle.Text" xml:space="preserve">
+    <value>Batch-Icon-Generator für Windows und Android</value>
+  </data>
+  <data name="SourceFileHeader.Text" xml:space="preserve">
+    <value>Quelldatei</value>
+  </data>
+  <data name="DropZoneText.Text" xml:space="preserve">
+    <value>Datei hierher ziehen</value>
+  </data>
+  <data name="DropZoneSubtext.Text" xml:space="preserve">
+    <value>PNG- und SVG-Dateien werden unterstützt</value>
+  </data>
+  <data name="BrowseButton.Content" xml:space="preserve">
+    <value>Datei auf der Festplatte auswählen...</value>
+  </data>
+  <data name="OutputDirHeader.Text" xml:space="preserve">
+    <value>Zielordner</value>
+  </data>
+  <data name="OutputDirTextBox.PlaceholderText" xml:space="preserve">
+    <value>Ordner zum Speichern von Icons auswählen</value>
+  </data>
+  <data name="BrowseFolderButton.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Ordner auswählen</value>
+  </data>
+  <data name="AndroidSettingsHeader.Text" xml:space="preserve">
+    <value>Android-Einstellungen</value>
+  </data>
+  <data name="AndroidBgColorText.Text" xml:space="preserve">
+    <value>Hintergrundfarbe des adaptiven Icons</value>
+  </data>
+  <data name="QuickColorsText.Text" xml:space="preserve">
+    <value>Schnellfarben:</value>
+  </data>
+  <data name="UseBgImageCheckBox.Content" xml:space="preserve">
+    <value>Hintergrundbild verwenden</value>
+  </data>
+  <data name="BgImagePathTextBox.PlaceholderText" xml:space="preserve">
+    <value>Hintergrundbilddatei</value>
+  </data>
+  <data name="ExportParamsHeader.Text" xml:space="preserve">
+    <value>Export-Parameter</value>
+  </data>
+  <data name="WindowsIcoCheckBox.Content" xml:space="preserve">
+    <value>Windows (Klassisches .ico)</value>
+  </data>
+  <data name="WindowsIcoSubtext.Text" xml:space="preserve">
+    <value>Multiformat-Container (16-256px) mit Mikroschärfung für kleine Größen.</value>
+  </data>
+  <data name="WindowsAssetsCheckBox.Content" xml:space="preserve">
+    <value>Windows-Assets (Quadratische PNGs)</value>
+  </data>
+  <data name="WindowsAssetsSubtext.Text" xml:space="preserve">
+    <value>Separate PNG-Logos in Skalierungen von 100% bis 400% für UWP/WinUI-Manifeste.</value>
+  </data>
+  <data name="AndroidAdaptiveCheckBox.Content" xml:space="preserve">
+    <value>Android Adaptive &amp; Legacy</value>
+  </data>
+  <data name="AndroidAdaptiveSubtext.Text" xml:space="preserve">
+    <value>Zuschneiden von Vorder- und Hintergrundebenen nach MIPMAP-Dichten, Legacy-Kreis und Google Play 512x512.</value>
+  </data>
+  <data name="SysIntegrationHeader.Text" xml:space="preserve">
+    <value>Systemintegration</value>
+  </data>
+  <data name="ContextMenuToggle.Header" xml:space="preserve">
+    <value>Windows-Kontextmenü</value>
+  </data>
+  <data name="ContextMenuSubtext.Text" xml:space="preserve">
+    <value>Element "Symbole in IconForge generieren" zum Explorer-Kontextmenü hinzufügen</value>
+  </data>
+  <data name="ProgressIdleText.Text" xml:space="preserve">
+    <value>Bereit...</value>
+  </data>
+  <data name="GenerateButton.Content" xml:space="preserve">
+    <value>Symbole generieren</value>
+  </data>
+  <data name="ErrorUnsupportedFormatTitle" xml:space="preserve">
+    <value>Format nicht unterstützt</value>
+  </data>
+  <data name="ErrorUnsupportedFormatMessage" xml:space="preserve">
+    <value>IconForge unterstützt nur PNG- und SVG-Dateien als Quelle.</value>
+  </data>
+  <data name="FileTypeSvg" xml:space="preserve">
+    <value>SVG-Vektorgrafik</value>
+  </data>
+  <data name="FileTypePng" xml:space="preserve">
+    <value>PNG-Rastergrafik</value>
+  </data>
+  <data name="FileSizeMb" xml:space="preserve">
+    <value>Größe: {0:F2} MB</value>
+  </data>
+  <data name="FileSizeKb" xml:space="preserve">
+    <value>Größe: {0:F1} KB</value>
+  </data>
+  <data name="FileSizeUnknown" xml:space="preserve">
+    <value>Größe: unbekannt</value>
+  </data>
+  <data name="ErrorIntegrationTitle" xml:space="preserve">
+    <value>Integrationsfehler</value>
+  </data>
+  <data name="ErrorIntegrationMessage" xml:space="preserve">
+    <value>Explorer-Parameter konnten nicht geändert werden: {0}</value>
+  </data>
+  <data name="ErrorNoFileTitle" xml:space="preserve">
+    <value>Keine Datei ausgewählt</value>
+  </data>
+  <data name="ErrorNoFileMessage" xml:space="preserve">
+    <value>Bitte wählen Sie eine PNG- oder SVG-Quelldatei aus.</value>
+  </data>
+  <data name="ErrorNoOutputDirTitle" xml:space="preserve">
+    <value>Zielordner</value>
+  </data>
+  <data name="ErrorNoOutputDirMessage" xml:space="preserve">
+    <value>Bitte geben Sie einen Ordner zum Speichern von Icons an.</value>
+  </data>
+  <data name="ErrorNoParamsTitle" xml:space="preserve">
+    <value>Generierungsparameter</value>
+  </data>
+  <data name="ErrorNoParamsMessage" xml:space="preserve">
+    <value>Sie müssen mindestens einen Symboltyp für die Generierung auswählen.</value>
+  </data>
+  <data name="ToastTitle" xml:space="preserve">
+    <value>Generierung abgeschlossen</value>
+  </data>
+  <data name="ToastMessage" xml:space="preserve">
+    <value>Das Icon-Paket wurde erfolgreich im ausgewählten Ordner gespeichert.</value>
+  </data>
+  <data name="ToastButtonText" xml:space="preserve">
+    <value>Ordner öffnen</value>
+  </data>
+  <data name="ErrorGenerationTitle" xml:space="preserve">
+    <value>Generierungsfehler</value>
+  </data>
+  <data name="SuccessMessage" xml:space="preserve">
+    <value>Erfolgreich abgeschlossen in {0:F1} ms!</value>
+  </data>
+</root>

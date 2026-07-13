@@ -22,6 +22,7 @@ namespace IconForge
         private string? _selectedOutputPath;
         private string? _selectedBgImagePath;
         private readonly IconProcessor _processor = new();
+        private readonly Microsoft.Windows.ApplicationModel.Resources.ResourceLoader _resourceLoader = new();
 
         public MainPage()
         {
@@ -105,7 +106,7 @@ namespace IconForge
             string ext = Path.GetExtension(filePath).ToLowerInvariant();
             if (ext != ".png" && ext != ".svg")
             {
-                ShowErrorDialog("Формат не поддерживается", "IconForge поддерживает только файлы PNG и SVG в качестве источника.");
+                ShowErrorDialog(_resourceLoader.GetString("ErrorUnsupportedFormatTitle"), _resourceLoader.GetString("ErrorUnsupportedFormatMessage"));
                 return;
             }
 
@@ -113,19 +114,19 @@ namespace IconForge
 
             // Update UI state
             FileNameTextBlock.Text = Path.GetFileName(filePath);
-            FileTypeTextBlock.Text = ext == ".svg" ? "Векторное изображение SVG" : "Растровое изображение PNG";
+            FileTypeTextBlock.Text = ext == ".svg" ? _resourceLoader.GetString("FileTypeSvg") : _resourceLoader.GetString("FileTypePng");
 
             try
             {
                 var fileInfo = new FileInfo(filePath);
                 double sizeMb = (double)fileInfo.Length / (1024 * 1024);
                 FileSizeTextBlock.Text = sizeMb < 0.1 
-                    ? $"Размер: {fileInfo.Length / 1024.0:F1} КБ" 
-                    : $"Размер: {sizeMb:F2} МБ";
+                    ? string.Format(_resourceLoader.GetString("FileSizeKb"), fileInfo.Length / 1024.0) 
+                    : string.Format(_resourceLoader.GetString("FileSizeMb"), sizeMb);
             }
             catch
             {
-                FileSizeTextBlock.Text = "Размер: неизвестно";
+                FileSizeTextBlock.Text = _resourceLoader.GetString("FileSizeUnknown");
             }
 
             // Display previews
@@ -280,7 +281,7 @@ namespace IconForge
             }
             catch (Exception ex)
             {
-                ShowErrorDialog("Ошибка интеграции", $"Не удалось изменить параметры проводника: {ex.Message}");
+                ShowErrorDialog(_resourceLoader.GetString("ErrorIntegrationTitle"), string.Format(_resourceLoader.GetString("ErrorIntegrationMessage"), ex.Message));
                 // Revert toggle state
                 ContextMenuToggle.Toggled -= ContextMenuToggle_Toggled;
                 ContextMenuToggle.IsOn = !ContextMenuToggle.IsOn;
@@ -295,14 +296,14 @@ namespace IconForge
             // Validation
             if (string.IsNullOrEmpty(_selectedInputPath))
             {
-                ShowErrorDialog("Файл не выбран", "Пожалуйста, выберите исходный PNG или SVG файл.");
+                ShowErrorDialog(_resourceLoader.GetString("ErrorNoFileTitle"), _resourceLoader.GetString("ErrorNoFileMessage"));
                 return;
             }
 
             _selectedOutputPath = OutputDirTextBox.Text.Trim();
             if (string.IsNullOrEmpty(_selectedOutputPath))
             {
-                ShowErrorDialog("Папка назначения", "Пожалуйста, укажите папку для сохранения иконок.");
+                ShowErrorDialog(_resourceLoader.GetString("ErrorNoOutputDirTitle"), _resourceLoader.GetString("ErrorNoOutputDirMessage"));
                 return;
             }
 
@@ -312,7 +313,7 @@ namespace IconForge
 
             if (!genIco && !genAssets && !genAndroid)
             {
-                ShowErrorDialog("Параметры генерации", "Необходимо выбрать хотя бы один тип иконок для генерации.");
+                ShowErrorDialog(_resourceLoader.GetString("ErrorNoParamsTitle"), _resourceLoader.GetString("ErrorNoParamsMessage"));
                 return;
             }
 
@@ -349,15 +350,15 @@ namespace IconForge
 
                 var elapsed = DateTime.Now - startTime;
                 LogTextBlock.Text += $"========================================\n";
-                LogTextBlock.Text += $"Успешно завершено за {elapsed.TotalMilliseconds:F1} мс!\n";
+                LogTextBlock.Text += string.Format(_resourceLoader.GetString("SuccessMessage"), elapsed.TotalMilliseconds) + "\n";
                 
                 // Show completion Toast Notification
                 ShowCompletionToast(_selectedOutputPath);
             }
             catch (Exception ex)
             {
-                LogTextBlock.Text += $"[ОШИБКА] {ex.Message}\n";
-                ShowErrorDialog("Ошибка генерации", ex.Message);
+                LogTextBlock.Text += $"[ERROR] {ex.Message}\n";
+                ShowErrorDialog(_resourceLoader.GetString("ErrorGenerationTitle"), ex.Message);
             }
             finally
             {
@@ -393,18 +394,21 @@ namespace IconForge
             try
             {
                 string folderUri = new Uri(outputPath).AbsoluteUri;
+                string title = _resourceLoader.GetString("ToastTitle");
+                string message = _resourceLoader.GetString("ToastMessage");
+                string buttonText = _resourceLoader.GetString("ToastButtonText");
                 
                 var toastXml = new XmlDocument();
                 string xml = $@"
 <toast>
     <visual>
         <binding template='ToastGeneric'>
-            <text>Генерация завершена</text>
-            <text>Пакет иконок успешно сохранен в выбранную папку.</text>
+            <text>{title}</text>
+            <text>{message}</text>
         </binding>
     </visual>
     <actions>
-        <action content='Открыть папку' arguments='{folderUri}' activationType='protocol' />
+        <action content='{buttonText}' arguments='{folderUri}' activationType='protocol' />
     </actions>
 </toast>";
                 toastXml.LoadXml(xml);

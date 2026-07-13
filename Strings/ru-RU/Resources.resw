@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="0" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  
+  <data name="AppTitle" xml:space="preserve">
+    <value>IconForge</value>
+  </data>
+  <data name="AppSubtitle.Text" xml:space="preserve">
+    <value>Пакетный генератор иконок для Windows и Android</value>
+  </data>
+  <data name="SourceFileHeader.Text" xml:space="preserve">
+    <value>Исходный файл</value>
+  </data>
+  <data name="DropZoneText.Text" xml:space="preserve">
+    <value>Перетащите файл сюда</value>
+  </data>
+  <data name="DropZoneSubtext.Text" xml:space="preserve">
+    <value>Поддерживаются файлы PNG и SVG</value>
+  </data>
+  <data name="BrowseButton.Content" xml:space="preserve">
+    <value>Выбрать файл на диске...</value>
+  </data>
+  <data name="OutputDirHeader.Text" xml:space="preserve">
+    <value>Папка назначения</value>
+  </data>
+  <data name="OutputDirTextBox.PlaceholderText" xml:space="preserve">
+    <value>Выберите папку для сохранения иконок</value>
+  </data>
+  <data name="BrowseFolderButton.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Выбрать папку</value>
+  </data>
+  <data name="AndroidSettingsHeader.Text" xml:space="preserve">
+    <value>Настройки Android</value>
+  </data>
+  <data name="AndroidBgColorText.Text" xml:space="preserve">
+    <value>Цвет заднего фона адаптивной иконки</value>
+  </data>
+  <data name="QuickColorsText.Text" xml:space="preserve">
+    <value>Быстрые цвета:</value>
+  </data>
+  <data name="UseBgImageCheckBox.Content" xml:space="preserve">
+    <value>Использовать фоновое изображение</value>
+  </data>
+  <data name="BgImagePathTextBox.PlaceholderText" xml:space="preserve">
+    <value>Файл изображения для фона</value>
+  </data>
+  <data name="ExportParamsHeader.Text" xml:space="preserve">
+    <value>Параметры экспорта</value>
+  </data>
+  <data name="WindowsIcoCheckBox.Content" xml:space="preserve">
+    <value>Windows (Классический .ico)</value>
+  </data>
+  <data name="WindowsIcoSubtext.Text" xml:space="preserve">
+    <value>Мультиформатный контейнер (16-256px) с микро-шарпингом для мелких размеров.</value>
+  </data>
+  <data name="WindowsAssetsCheckBox.Content" xml:space="preserve">
+    <value>Windows Assets (Square PNGs)</value>
+  </data>
+  <data name="WindowsAssetsSubtext.Text" xml:space="preserve">
+    <value>Раздельные PNG логотипы в масштабах от 100% до 400% для UWP/WinUI манифестов.</value>
+  </data>
+  <data name="AndroidAdaptiveCheckBox.Content" xml:space="preserve">
+    <value>Android Adaptive &amp; Legacy</value>
+  </data>
+  <data name="AndroidAdaptiveSubtext.Text" xml:space="preserve">
+    <value>Нарезка слоев Foreground, Background по MIPMAP плотностям, legacy-круг и Google Play 512x512.</value>
+  </data>
+  <data name="SysIntegrationHeader.Text" xml:space="preserve">
+    <value>Системная интеграция</value>
+  </data>
+  <data name="ContextMenuToggle.Header" xml:space="preserve">
+    <value>Контекстное меню Windows</value>
+  </data>
+  <data name="ContextMenuSubtext.Text" xml:space="preserve">
+    <value>Добавить в контекстное меню Explorer пункт 'Сгенерировать иконки в IconForge'</value>
+  </data>
+  <data name="ProgressIdleText.Text" xml:space="preserve">
+    <value>Ожидание...</value>
+  </data>
+  <data name="GenerateButton.Content" xml:space="preserve">
+    <value>Сгенерировать иконки</value>
+  </data>
+  <data name="ErrorUnsupportedFormatTitle" xml:space="preserve">
+    <value>Формат не поддерживается</value>
+  </data>
+  <data name="ErrorUnsupportedFormatMessage" xml:space="preserve">
+    <value>IconForge поддерживает только файлы PNG и SVG в качестве источника.</value>
+  </data>
+  <data name="FileTypeSvg" xml:space="preserve">
+    <value>Векторное изображение SVG</value>
+  </data>
+  <data name="FileTypePng" xml:space="preserve">
+    <value>Растровое изображение PNG</value>
+  </data>
+  <data name="FileSizeMb" xml:space="preserve">
+    <value>Размер: {0:F2} МБ</value>
+  </data>
+  <data name="FileSizeKb" xml:space="preserve">
+    <value>Размер: {0:F1} КБ</value>
+  </data>
+  <data name="FileSizeUnknown" xml:space="preserve">
+    <value>Размер: неизвестно</value>
+  </data>
+  <data name="ErrorIntegrationTitle" xml:space="preserve">
+    <value>Ошибка интеграции</value>
+  </data>
+  <data name="ErrorIntegrationMessage" xml:space="preserve">
+    <value>Не удалось изменить параметры проводника: {0}</value>
+  </data>
+  <data name="ErrorNoFileTitle" xml:space="preserve">
+    <value>Файл не выбран</value>
+  </data>
+  <data name="ErrorNoFileMessage" xml:space="preserve">
+    <value>Пожалуйста, выберите исходный PNG или SVG файл.</value>
+  </data>
+  <data name="ErrorNoOutputDirTitle" xml:space="preserve">
+    <value>Папка назначения</value>
+  </data>
+  <data name="ErrorNoOutputDirMessage" xml:space="preserve">
+    <value>Пожалуйста, укажите папку для сохранения иконок.</value>
+  </data>
+  <data name="ErrorNoParamsTitle" xml:space="preserve">
+    <value>Параметры генерации</value>
+  </data>
+  <data name="ErrorNoParamsMessage" xml:space="preserve">
+    <value>Необходимо выбрать хотя бы один тип иконок для генерации.</value>
+  </data>
+  <data name="ToastTitle" xml:space="preserve">
+    <value>Генерация завершена</value>
+  </data>
+  <data name="ToastMessage" xml:space="preserve">
+    <value>Пакет иконок успешно сохранен в выбранную папку.</value>
+  </data>
+  <data name="ToastButtonText" xml:space="preserve">
+    <value>Открыть папку</value>
+  </data>
+  <data name="ErrorGenerationTitle" xml:space="preserve">
+    <value>Ошибка генерации</value>
+  </data>
+  <data name="SuccessMessage" xml:space="preserve">
+    <value>Успешно завершено за {0:F1} мс!</value>
+  </data>
+</root>

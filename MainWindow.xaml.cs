@@ -19,6 +19,11 @@ public sealed partial class MainWindow : Window
         Instance = this;
         InitializeComponent();
 
+        var loader = new Microsoft.Windows.ApplicationModel.Resources.ResourceLoader();
+        string appTitle = loader.GetString("AppTitle");
+        Title = appTitle;
+        AppTitleBar.Title = appTitle;
+
         ExtendsContentIntoTitleBar = true;
         SetTitleBar(AppTitleBar);
 

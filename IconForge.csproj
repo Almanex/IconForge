@@ -79,5 +79,14 @@
     <PublishTrimmed Condition="'$(Configuration)' != 'Debug'">False</PublishTrimmed>
     <PublishSingleFile Condition="'$(Configuration)' != 'Debug'">True</PublishSingleFile>
     <IncludeAllContentForSelfExtract Condition="'$(Configuration)' != 'Debug'">True</IncludeAllContentForSelfExtract>
+    <SatelliteResourceLanguages>en-US;ru-RU;de-DE</SatelliteResourceLanguages>
   </PropertyGroup>
+
+  <!-- Custom target to copy Assets folder next to the single-file executable in the publish folder -->
+  <Target Name="CopyAssetsToPublish" AfterTargets="Publish">
+    <ItemGroup>
+      <AssetFiles Include="Assets\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(AssetFiles)" DestinationFolder="$(PublishDir)Assets\%(RecursiveDir)" />
+  </Target>
 </Project>
