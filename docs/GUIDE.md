@@ -6,6 +6,13 @@ Welcome to the **IconForge** user guide. This document provides step-by-step ins
 
 ---
 
+<p align="center">
+  <img src="../Screenshots/cover.png" alt="IconForge main" width="49%" />
+  <img src="../Screenshots/editor.png" alt="IconForge settings" width="49%" />
+</p>
+
+---
+
 ## 1. Quick Start Workflow
 
 IconForge is designed to be straightforward and fast:

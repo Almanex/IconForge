@@ -6,6 +6,13 @@
 
 ---
 
+<p align="center">
+  <img src="../Screenshots/cover.png" alt="IconForge main" width="49%" />
+  <img src="../Screenshots/editor.png" alt="IconForge settings" width="49%" />
+</p>
+
+---
+
 ## 1. Быстрый старт
 
 Процесс работы в IconForge разработан таким образом, чтобы быть максимально простым и быстрым:

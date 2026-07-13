@@ -10,6 +10,13 @@
 [![UI: WinUI 3](https://img.shields.io/badge/UI-WinUI%203-blue)](https://learn.microsoft.com/windows/apps/winui/winui3/)
 [![Share](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2FAlmanex%2Ficoboo)](https://twitter.com/intent/tweet?text=Check%20out%20IconForge%20-%20A%20native%20icon%20generator%20for%20Windows%2011!&url=https%3A%2F%2Fgithub.com%2FAlmanex%2Ficoboo)
 
+<p align="center">
+  <img src="../Screenshots/cover.png" alt="IconForge main" width="49%" />
+  <img src="../Screenshots/editor.png" alt="IconForge settings" width="49%" />
+</p>
+
+---
+
 IconForge — это легкое нативное Windows-приложение (утилита), разработанное на фреймворке WinUI 3 (Windows App SDK) и C#. Оно предназначено для пакетной генерации наборов иконок для Windows (`.ico`, `Assets`) и Android (`Adaptive Icons`) из одного исходного изображения формата PNG или SVG.
 
 Подробное описание всех настроек и возможностей см. в [Руководстве пользователя](GUIDE_RU.md).

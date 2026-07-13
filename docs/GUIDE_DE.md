@@ -6,6 +6,13 @@ Willkommen beim Benutzerhandbuch für **IconForge**. Dieses Dokument bietet Schr
 
 ---
 
+<p align="center">
+  <img src="../Screenshots/cover.png" alt="IconForge main" width="49%" />
+  <img src="../Screenshots/editor.png" alt="IconForge settings" width="49%" />
+</p>
+
+---
+
 ## 1. Schnellstart-Workflow
 
 IconForge ist so konzipiert, dass es einfach und schnell zu bedienen ist:
