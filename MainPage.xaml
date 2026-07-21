@@ -59,11 +59,10 @@
                         <StackPanel Padding="16" Spacing="8">
                             <TextBlock x:Uid="PresetHeader" Text="Быстрые пресеты" Style="{ThemeResource SubtitleTextBlockStyle}" FontWeight="Medium" />
                             <ComboBox x:Name="PresetComboBox" HorizontalAlignment="Stretch" SelectionChanged="PresetComboBox_SelectionChanged">
-                                <ComboBoxItem x:Uid="PresetCustom" Content="Пользовательский" IsSelected="True" />
-                                <ComboBoxItem x:Uid="PresetWindows" Content="Windows Приложение" />
+                                <ComboBoxItem x:Uid="PresetWindows" Content="Windows Приложение" IsSelected="True" />
                                 <ComboBoxItem x:Uid="PresetWebFavicon" Content="Web &amp; Favicon Pack" />
                                 <ComboBoxItem x:Uid="PresetMacIcns" Content="macOS App (.icns)" />
-                                <ComboBoxItem x:Uid="PresetRounded" Content="Скругленная иконка" />
+                                <ComboBoxItem x:Uid="PresetCustom" Content="Пользовательский" />
                             </ComboBox>
                         </StackPanel>
                     </Border>

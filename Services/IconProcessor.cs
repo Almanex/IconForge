@@ -261,7 +261,7 @@ namespace IconForge.Services
             });
         }
 
-        private static SKBitmap LoadBaseBitmap(string inputPath)
+        public static SKBitmap LoadBaseBitmap(string inputPath)
         {
             string ext = Path.GetExtension(inputPath).ToLowerInvariant();
             if (ext == ".svg")

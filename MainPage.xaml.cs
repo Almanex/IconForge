@@ -521,7 +521,7 @@ namespace IconForge
             int idx = PresetComboBox.SelectedIndex;
             switch (idx)
             {
-                case 1: // Windows App
+                case 0: // Windows App
                     WindowsIcoCheckBox.IsChecked = true;
                     WindowsAssetsCheckBox.IsChecked = true;
                     AndroidAdaptiveCheckBox.IsChecked = false;
@@ -529,7 +529,7 @@ namespace IconForge
                     MacIcnsCheckBox.IsChecked = false;
                     ResetFilters();
                     break;
-                case 2: // Web & Favicon Pack
+                case 1: // Web & Favicon Pack
                     WindowsIcoCheckBox.IsChecked = true;
                     FaviconPackageCheckBox.IsChecked = true;
                     WindowsAssetsCheckBox.IsChecked = false;
@@ -537,7 +537,7 @@ namespace IconForge
                     MacIcnsCheckBox.IsChecked = false;
                     ResetFilters();
                     break;
-                case 3: // macOS App (.icns)
+                case 2: // macOS App (.icns)
                     MacIcnsCheckBox.IsChecked = true;
                     WindowsIcoCheckBox.IsChecked = true;
                     WindowsAssetsCheckBox.IsChecked = false;
@@ -545,11 +545,7 @@ namespace IconForge
                     FaviconPackageCheckBox.IsChecked = false;
                     ResetFilters();
                     break;
-                case 4: // Rounded Icon
-                    CornerRadiusSlider.Value = 20;
-                    PaddingSlider.Value = 8;
-                    DropShadowCheckBox.IsChecked = true;
-                    WindowsIcoCheckBox.IsChecked = true;
+                case 3: // Custom
                     break;
             }
             UpdateLivePreviews();
@@ -641,7 +637,7 @@ namespace IconForge
             {
                 try
                 {
-                    using var raw = SKBitmap.Decode(path);
+                    using var raw = IconProcessor.LoadBaseBitmap(path);
                     if (raw == null) return;
 
                     using var filtered = IconProcessor.ApplyFiltersAndStyling(
@@ -655,24 +651,28 @@ namespace IconForge
                         pad,
                         shadow);
 
-                    var img256 = RenderSkiaBitmapToBitmapImage(filtered, 256);
-                    var img48 = RenderSkiaBitmapToBitmapImage(filtered, 48);
-                    var img32 = RenderSkiaBitmapToBitmapImage(filtered, 32);
-                    var img16 = RenderSkiaBitmapToBitmapImage(filtered, 16);
+                    byte[] b256 = EncodeSkiaToPngBytes(filtered, 256);
+                    byte[] b48 = EncodeSkiaToPngBytes(filtered, 48);
+                    byte[] b32 = EncodeSkiaToPngBytes(filtered, 32);
+                    byte[] b16 = EncodeSkiaToPngBytes(filtered, 16);
 
-                    DispatcherQueue.TryEnqueue(() =>
+                    DispatcherQueue.TryEnqueue(async () =>
                     {
-                        Preview256.Source = img256;
-                        Preview48.Source = img48;
-                        Preview32.Source = img32;
-                        Preview16.Source = img16;
+                        try
+                        {
+                            Preview256.Source = await BytesToBitmapImageAsync(b256);
+                            Preview48.Source = await BytesToBitmapImageAsync(b48);
+                            Preview32.Source = await BytesToBitmapImageAsync(b32);
+                            Preview16.Source = await BytesToBitmapImageAsync(b16);
+                        }
+                        catch { }
                     });
                 }
                 catch { }
             });
         }
 
-        private static BitmapImage RenderSkiaBitmapToBitmapImage(SKBitmap bmp, int size)
+        private static byte[] EncodeSkiaToPngBytes(SKBitmap bmp, int size)
         {
             using var resized = new SKBitmap(size, size);
             using (var canvas = new SKCanvas(resized))
@@ -683,11 +683,22 @@ namespace IconForge
             }
             using var image = SKImage.FromBitmap(resized);
             using var data = image.Encode(SKEncodedImageFormat.Png, 100);
-            using var ms = new MemoryStream(data.ToArray());
+            return data.ToArray();
+        }
 
+        private static async Task<BitmapImage> BytesToBitmapImageAsync(byte[] bytes)
+        {
             var bitmapImage = new BitmapImage();
-            var randomAccessStream = ms.AsRandomAccessStream();
-            bitmapImage.SetSource(randomAccessStream);
+            using var stream = new Windows.Storage.Streams.InMemoryRandomAccessStream();
+            using (var writer = new Windows.Storage.Streams.DataWriter(stream))
+            {
+                writer.WriteBytes(bytes);
+                await writer.StoreAsync();
+                await writer.FlushAsync();
+                writer.DetachStream();
+            }
+            stream.Seek(0);
+            await bitmapImage.SetSourceAsync(stream);
             return bitmapImage;
         }
 
