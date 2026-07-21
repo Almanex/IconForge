@@ -515,12 +515,12 @@ namespace IconForge.Services
                 if (brightness != 0 || contrast != 0)
                 {
                     float c = (100f + contrast) / 100f;
-                    float b = brightness / 255f;
+                    float b = brightness / 255f; // SkiaSharp uses normalized 0..1 range for matrix offsets
                     float[] matrix = new float[]
                     {
-                        c, 0, 0, 0, b * 255f,
-                        0, c, 0, 0, b * 255f,
-                        0, 0, c, 0, b * 255f,
+                        c, 0, 0, 0, b,
+                        0, c, 0, 0, b,
+                        0, 0, c, 0, b,
                         0, 0, 0, 1, 0
                     };
                     filtersList.Add(SKColorFilter.CreateColorMatrix(matrix));
@@ -541,10 +541,10 @@ namespace IconForge.Services
                 {
                     filtersList.Add(SKColorFilter.CreateColorMatrix(new float[]
                     {
-                        -1, 0, 0, 0, 255,
-                        0, -1, 0, 0, 255,
-                        0, 0, -1, 0, 255,
-                        0, 0, 0, 1, 0
+                        -1f,  0f,  0f, 0f, 1f,
+                         0f, -1f,  0f, 0f, 1f,
+                         0f,  0f, -1f, 0f, 1f,
+                         0f,  0f,  0f, 1f, 0f
                     }));
                 }
 

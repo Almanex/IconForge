@@ -49,24 +49,6 @@
             <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
                 <StackPanel Spacing="16" Padding="0,0,12,0">
 
-                    <!-- 0. Presets Card -->
-                    <Border 
-                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                        BorderThickness="1"
-                        CornerRadius="8">
-                        
-                        <StackPanel Padding="16" Spacing="8">
-                            <TextBlock x:Uid="PresetHeader" Text="Быстрые пресеты" Style="{ThemeResource SubtitleTextBlockStyle}" FontWeight="Medium" />
-                            <ComboBox x:Name="PresetComboBox" HorizontalAlignment="Stretch" SelectionChanged="PresetComboBox_SelectionChanged">
-                                <ComboBoxItem x:Uid="PresetWindows" Content="Windows Приложение" IsSelected="True" />
-                                <ComboBoxItem x:Uid="PresetWebFavicon" Content="Web &amp; Favicon Pack" />
-                                <ComboBoxItem x:Uid="PresetMacIcns" Content="macOS App (.icns)" />
-                                <ComboBoxItem x:Uid="PresetCustom" Content="Пользовательский" />
-                            </ComboBox>
-                        </StackPanel>
-                    </Border>
-
                     <!-- 1. Source File Card -->
                     <Border 
                         Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
@@ -410,6 +392,9 @@
                                         </Button>
                                         <Button x:Name="PreviewBgLightBtn" Width="28" Height="28" Padding="0" Click="PreviewBg_Click" Tag="Light" ToolTipService.ToolTip="Светлый фон">
                                             <Border Width="12" Height="12" Background="#F3F3F3" CornerRadius="2" BorderBrush="#CCC" BorderThickness="1" />
+                                        </Button>
+                                        <Button x:Name="PreviewBgCustomBtn" Width="28" Height="28" Padding="0" Click="PreviewBg_Click" Tag="CustomBg" ToolTipService.ToolTip="Цвет из настроек Android">
+                                            <Border x:Name="PreviewBgCustomIndicator" Width="12" Height="12" Background="White" CornerRadius="6" BorderBrush="#888" BorderThickness="1" />
                                         </Button>
                                     </StackPanel>
                                 </Grid>

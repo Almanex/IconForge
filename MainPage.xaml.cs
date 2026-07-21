@@ -254,6 +254,11 @@ namespace IconForge
                     var color = SKColor.Parse(hex);
                     var mediaColor = Windows.UI.Color.FromArgb(color.Alpha, color.Red, color.Green, color.Blue);
                     BgColorPreview.Background = new SolidColorBrush(mediaColor);
+                    if (PreviewBgCustomIndicator != null)
+                    {
+                        PreviewBgCustomIndicator.Background = new SolidColorBrush(mediaColor);
+                    }
+                    UpdateLivePreviews();
                 }
                 catch
                 {
@@ -514,56 +519,6 @@ namespace IconForge
 
         // --- New Feature Handlers ---
 
-        private void PresetComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (PresetComboBox == null || WindowsIcoCheckBox == null) return;
-
-            int idx = PresetComboBox.SelectedIndex;
-            switch (idx)
-            {
-                case 0: // Windows App
-                    WindowsIcoCheckBox.IsChecked = true;
-                    WindowsAssetsCheckBox.IsChecked = true;
-                    AndroidAdaptiveCheckBox.IsChecked = false;
-                    FaviconPackageCheckBox.IsChecked = false;
-                    MacIcnsCheckBox.IsChecked = false;
-                    ResetFilters();
-                    break;
-                case 1: // Web & Favicon Pack
-                    WindowsIcoCheckBox.IsChecked = true;
-                    FaviconPackageCheckBox.IsChecked = true;
-                    WindowsAssetsCheckBox.IsChecked = false;
-                    AndroidAdaptiveCheckBox.IsChecked = false;
-                    MacIcnsCheckBox.IsChecked = false;
-                    ResetFilters();
-                    break;
-                case 2: // macOS App (.icns)
-                    MacIcnsCheckBox.IsChecked = true;
-                    WindowsIcoCheckBox.IsChecked = true;
-                    WindowsAssetsCheckBox.IsChecked = false;
-                    AndroidAdaptiveCheckBox.IsChecked = false;
-                    FaviconPackageCheckBox.IsChecked = false;
-                    ResetFilters();
-                    break;
-                case 3: // Custom
-                    break;
-            }
-            UpdateLivePreviews();
-        }
-
-        private void ResetFilters()
-        {
-            if (BrightnessSlider == null) return;
-            BrightnessSlider.Value = 0;
-            ContrastSlider.Value = 0;
-            CornerRadiusSlider.Value = 0;
-            PaddingSlider.Value = 0;
-            GrayscaleCheckBox.IsChecked = false;
-            InvertCheckBox.IsChecked = false;
-            DropShadowCheckBox.IsChecked = false;
-            TintColorTextBox.Text = "";
-        }
-
         private void FilterSlider_ValueChanged(object sender, Microsoft.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
         {
             if (BrightnessValueText != null && BrightnessSlider != null) 
@@ -611,6 +566,9 @@ namespace IconForge
                         break;
                     case "Light":
                         PreviewGridContainer.Background = new SolidColorBrush(Windows.UI.Color.FromArgb(255, 243, 243, 243));
+                        break;
+                    case "CustomBg":
+                        PreviewGridContainer.Background = BgColorPreview.Background;
                         break;
                     default:
                         PreviewGridContainer.Background = (Brush)Application.Current.Resources["ControlAltFillColorSecondaryBrush"];
