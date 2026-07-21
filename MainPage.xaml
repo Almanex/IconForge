@@ -49,6 +49,25 @@
             <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
                 <StackPanel Spacing="16" Padding="0,0,12,0">
 
+                    <!-- 0. Presets Card -->
+                    <Border 
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8">
+                        
+                        <StackPanel Padding="16" Spacing="8">
+                            <TextBlock x:Uid="PresetHeader" Text="Быстрые пресеты" Style="{ThemeResource SubtitleTextBlockStyle}" FontWeight="Medium" />
+                            <ComboBox x:Name="PresetComboBox" HorizontalAlignment="Stretch" SelectionChanged="PresetComboBox_SelectionChanged">
+                                <ComboBoxItem x:Uid="PresetCustom" Content="Пользовательский" IsSelected="True" />
+                                <ComboBoxItem x:Uid="PresetWindows" Content="Windows Приложение" />
+                                <ComboBoxItem x:Uid="PresetWebFavicon" Content="Web &amp; Favicon Pack" />
+                                <ComboBoxItem x:Uid="PresetMacIcns" Content="macOS App (.icns)" />
+                                <ComboBoxItem x:Uid="PresetRounded" Content="Скругленная иконка" />
+                            </ComboBox>
+                        </StackPanel>
+                    </Border>
+
                     <!-- 1. Source File Card -->
                     <Border 
                         Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
@@ -251,6 +270,72 @@
                         </StackPanel>
                     </Border>
 
+                    <!-- 3.5 Image Filters & Styling Card -->
+                    <Border 
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8">
+                        
+                        <StackPanel Padding="16" Spacing="12">
+                            <TextBlock x:Uid="FiltersHeader" Text="Фильтры и коррекция цвета" Style="{ThemeResource SubtitleTextBlockStyle}" FontWeight="Medium" />
+                            
+                            <!-- Brightness -->
+                            <StackPanel Spacing="2">
+                                <Grid>
+                                    <TextBlock x:Uid="BrightnessLabel" Text="Яркость" Style="{ThemeResource CaptionTextBlockStyle}" />
+                                    <TextBlock x:Name="BrightnessValueText" Text="0" Style="{ThemeResource CaptionTextBlockStyle}" HorizontalAlignment="Right" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                                </Grid>
+                                <Slider x:Name="BrightnessSlider" Minimum="-100" Maximum="100" Value="0" ValueChanged="FilterSlider_ValueChanged" />
+                            </StackPanel>
+
+                            <!-- Contrast -->
+                            <StackPanel Spacing="2">
+                                <Grid>
+                                    <TextBlock x:Uid="ContrastLabel" Text="Контраст" Style="{ThemeResource CaptionTextBlockStyle}" />
+                                    <TextBlock x:Name="ContrastValueText" Text="0" Style="{ThemeResource CaptionTextBlockStyle}" HorizontalAlignment="Right" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                                </Grid>
+                                <Slider x:Name="ContrastSlider" Minimum="-100" Maximum="100" Value="0" ValueChanged="FilterSlider_ValueChanged" />
+                            </StackPanel>
+
+                            <!-- Corner Radius & Padding -->
+                            <Grid ColumnSpacing="12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Spacing="2">
+                                    <TextBlock Text="Скругление (%)" Style="{ThemeResource CaptionTextBlockStyle}" />
+                                    <Slider x:Name="CornerRadiusSlider" Minimum="0" Maximum="50" Value="0" ValueChanged="FilterSlider_ValueChanged" />
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Spacing="2">
+                                    <TextBlock Text="Отступ (%)" Style="{ThemeResource CaptionTextBlockStyle}" />
+                                    <Slider x:Name="PaddingSlider" Minimum="0" Maximum="40" Value="0" ValueChanged="FilterSlider_ValueChanged" />
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- Toggles -->
+                            <StackPanel Spacing="6">
+                                <CheckBox x:Name="GrayscaleCheckBox" x:Uid="GrayscaleLabel" Content="Черно-белый режим" Click="FilterOption_Changed" />
+                                <CheckBox x:Name="InvertCheckBox" x:Uid="InvertLabel" Content="Инверсия цветов" Click="FilterOption_Changed" />
+                                <CheckBox x:Name="DropShadowCheckBox" Content="Тень (Drop Shadow)" Click="FilterOption_Changed" />
+                            </StackPanel>
+
+                            <!-- Tint Color -->
+                            <StackPanel Spacing="4">
+                                <TextBlock x:Uid="TintColorLabel" Text="Цветовой оттенок (SVG Tint)" Style="{ThemeResource CaptionTextBlockStyle}" />
+                                <Grid ColumnSpacing="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Border x:Name="TintColorPreview" Width="28" Height="28" CornerRadius="14" Background="Transparent" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" />
+                                    <TextBox Grid.Column="1" x:Name="TintColorTextBox" Text="" PlaceholderText="Hex #RRGGBB (опционально)" TextChanged="TintColorTextBox_TextChanged" />
+                                </Grid>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
                 </StackPanel>
             </ScrollViewer>
 
@@ -300,6 +385,78 @@
                                     Foreground="{ThemeResource TextFillColorSecondaryBrush}" 
                                     Margin="28,-8,0,4" 
                                     TextWrapping="Wrap" />
+
+                                <CheckBox x:Name="FaviconPackageCheckBox" x:Uid="ExportWebFaviconLabel" IsChecked="False" Content="Web &amp; Favicon Pack (ico, png, manifest)" />
+                                <CheckBox x:Name="MacIcnsCheckBox" x:Uid="ExportMacIcnsLabel" IsChecked="False" Content="macOS App Icon (.icns)" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Live Pixel Preview Grid Card -->
+                        <Border 
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="8">
+                            
+                            <StackPanel Padding="16" Spacing="12">
+                                <Grid>
+                                    <TextBlock x:Uid="PreviewGridHeader" Text="Предпросмотр по размерам" Style="{ThemeResource SubtitleTextBlockStyle}" FontWeight="Medium" />
+                                    
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="4">
+                                        <Button x:Name="PreviewBgTransparentBtn" Width="28" Height="28" Padding="0" Click="PreviewBg_Click" Tag="Transparent" ToolTipService.ToolTip="Прозрачный">
+                                            <FontIcon Glyph="&#xE790;" FontSize="12" />
+                                        </Button>
+                                        <Button x:Name="PreviewBgDarkBtn" Width="28" Height="28" Padding="0" Click="PreviewBg_Click" Tag="Dark" ToolTipService.ToolTip="Темный фон">
+                                            <Border Width="12" Height="12" Background="#1F1F1F" CornerRadius="2" />
+                                        </Button>
+                                        <Button x:Name="PreviewBgLightBtn" Width="28" Height="28" Padding="0" Click="PreviewBg_Click" Tag="Light" ToolTipService.ToolTip="Светлый фон">
+                                            <Border Width="12" Height="12" Background="#F3F3F3" CornerRadius="2" BorderBrush="#CCC" BorderThickness="1" />
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Border x:Name="PreviewGridContainer" Background="{ThemeResource ControlAltFillColorSecondaryBrush}" CornerRadius="6" Padding="12" MinHeight="140">
+                                    <Grid ColumnSpacing="16" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- 256x256 preview -->
+                                        <StackPanel Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="4">
+                                            <Border Width="64" Height="64" CornerRadius="4">
+                                                <Image x:Name="Preview256" Stretch="Uniform" />
+                                            </Border>
+                                            <TextBlock Text="256x256" Style="{ThemeResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" HorizontalAlignment="Center" />
+                                        </StackPanel>
+
+                                        <!-- 48x48 preview -->
+                                        <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="4">
+                                            <Border Width="48" Height="48" CornerRadius="4">
+                                                <Image x:Name="Preview48" Stretch="Uniform" />
+                                            </Border>
+                                            <TextBlock Text="48x48" Style="{ThemeResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" HorizontalAlignment="Center" />
+                                        </StackPanel>
+
+                                        <!-- 32x32 preview -->
+                                        <StackPanel Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="4">
+                                            <Border Width="32" Height="32" CornerRadius="4">
+                                                <Image x:Name="Preview32" Stretch="Uniform" />
+                                            </Border>
+                                            <TextBlock Text="32x32" Style="{ThemeResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" HorizontalAlignment="Center" />
+                                        </StackPanel>
+
+                                        <!-- 16x16 preview -->
+                                        <StackPanel Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="4">
+                                            <Border Width="24" Height="24" CornerRadius="4">
+                                                <Image x:Name="Preview16" Stretch="Uniform" />
+                                            </Border>
+                                            <TextBlock Text="16x16" Style="{ThemeResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" HorizontalAlignment="Center" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
                             </StackPanel>
                         </Border>
 
@@ -352,6 +509,27 @@
 
                 <!-- 6. Generate Action Panel -->
                 <StackPanel Grid.Row="1" Spacing="12" Margin="0,16,0,0">
+                    <!-- ICO Frame Extraction Panel -->
+                    <Border 
+                        x:Name="IcoExtractCard" 
+                        Visibility="Collapsed" 
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
+                        BorderBrush="{ThemeResource SystemControlHighlightAccentBrush}" 
+                        BorderThickness="1" 
+                        CornerRadius="8">
+                        <StackPanel Padding="16" Spacing="10">
+                            <TextBlock x:Uid="IcoExtractHeader" Text="Извлечение кадров из ICO" Style="{ThemeResource SubtitleTextBlockStyle}" FontWeight="Medium" />
+                            <TextBlock x:Name="IcoExtractInfoText" Style="{ThemeResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                            <Button 
+                                x:Name="ExtractButton" 
+                                x:Uid="ExtractBtn" 
+                                Content="Извлечь все кадры в PNG" 
+                                Style="{StaticResource AccentButtonStyle}" 
+                                HorizontalAlignment="Stretch" 
+                                Click="ExtractButton_Click" />
+                        </StackPanel>
+                    </Border>
+
                     <Button 
                         x:Name="GenerateButton" 
                         x:Uid="GenerateButton"

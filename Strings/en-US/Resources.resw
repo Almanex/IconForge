@@ -197,4 +197,52 @@
   <data name="SuccessMessage" xml:space="preserve">
     <value>Successfully completed in {0:F1} ms!</value>
   </data>
+  <data name="PresetHeader.Text" xml:space="preserve">
+    <value>Quick Presets</value>
+  </data>
+  <data name="PresetCustom.Content" xml:space="preserve">
+    <value>Custom</value>
+  </data>
+  <data name="PresetWindows.Content" xml:space="preserve">
+    <value>Windows App</value>
+  </data>
+  <data name="PresetWebFavicon.Content" xml:space="preserve">
+    <value>Web &amp; Favicon Pack</value>
+  </data>
+  <data name="PresetMacIcns.Content" xml:space="preserve">
+    <value>macOS App (.icns)</value>
+  </data>
+  <data name="PresetRounded.Content" xml:space="preserve">
+    <value>Rounded Icon</value>
+  </data>
+  <data name="FiltersHeader.Text" xml:space="preserve">
+    <value>Image Filters &amp; Color</value>
+  </data>
+  <data name="BrightnessLabel.Text" xml:space="preserve">
+    <value>Brightness</value>
+  </data>
+  <data name="ContrastLabel.Text" xml:space="preserve">
+    <value>Contrast</value>
+  </data>
+  <data name="GrayscaleLabel.Content" xml:space="preserve">
+    <value>Grayscale Mode</value>
+  </data>
+  <data name="InvertLabel.Content" xml:space="preserve">
+    <value>Invert Colors</value>
+  </data>
+  <data name="TintColorLabel.Text" xml:space="preserve">
+    <value>Color Tint (SVG)</value>
+  </data>
+  <data name="ExportWebFaviconLabel.Content" xml:space="preserve">
+    <value>Web &amp; Favicon Pack (ico, png, manifest)</value>
+  </data>
+  <data name="ExportMacIcnsLabel.Content" xml:space="preserve">
+    <value>macOS App Icon (.icns)</value>
+  </data>
+  <data name="PreviewGridHeader.Text" xml:space="preserve">
+    <value>Multi-Size Live Preview</value>
+  </data>
+  <data name="ExtractBtn.Content" xml:space="preserve">
+    <value>Extract All Frames to PNG</value>
+  </data>
 </root>

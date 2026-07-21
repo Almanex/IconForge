@@ -123,7 +123,7 @@ namespace IconForge
         private void LoadFile(string filePath)
         {
             string ext = Path.GetExtension(filePath).ToLowerInvariant();
-            if (ext != ".png" && ext != ".svg")
+            if (ext != ".png" && ext != ".svg" && ext != ".ico")
             {
                 ShowErrorDialog(_resourceLoader.GetString("ErrorUnsupportedFormatTitle"), _resourceLoader.GetString("ErrorUnsupportedFormatMessage"));
                 return;
@@ -133,7 +133,23 @@ namespace IconForge
 
             // Update UI state
             FileNameTextBlock.Text = Path.GetFileName(filePath);
-            FileTypeTextBlock.Text = ext == ".svg" ? _resourceLoader.GetString("FileTypeSvg") : _resourceLoader.GetString("FileTypePng");
+            FileTypeTextBlock.Text = ext switch
+            {
+                ".svg" => _resourceLoader.GetString("FileTypeSvg"),
+                ".ico" => "ICO File",
+                _ => _resourceLoader.GetString("FileTypePng")
+            };
+
+            if (ext == ".ico")
+            {
+                IcoExtractCard.Visibility = Visibility.Visible;
+                var frames = IconProcessor.ExtractIcoFrames(filePath);
+                IcoExtractInfoText.Text = $"Обнаружен мультиформатный ICO файл ({frames.Count} кадров).";
+            }
+            else
+            {
+                IcoExtractCard.Visibility = Visibility.Collapsed;
+            }
 
             try
             {
@@ -151,7 +167,7 @@ namespace IconForge
             // Display previews
             try
             {
-                if (ext == ".png")
+                if (ext == ".png" || ext == ".ico")
                 {
                     PreviewImage.Source = new BitmapImage(new Uri(filePath));
                 }
@@ -162,7 +178,6 @@ namespace IconForge
             }
             catch
             {
-                // Fallback if local URI projection fails
                 PreviewImage.Source = null;
             }
 
@@ -177,6 +192,8 @@ namespace IconForge
 
             DropZoneEmptyState.Visibility = Visibility.Collapsed;
             DropZoneLoadedState.Visibility = Visibility.Visible;
+
+            UpdateLivePreviews();
         }
 
         private void RemoveFileButton_Click(object sender, RoutedEventArgs e)
@@ -329,8 +346,10 @@ namespace IconForge
             bool genIco = WindowsIcoCheckBox.IsChecked == true;
             bool genAssets = WindowsAssetsCheckBox.IsChecked == true;
             bool genAndroid = AndroidAdaptiveCheckBox.IsChecked == true;
+            bool genFavicon = FaviconPackageCheckBox.IsChecked == true;
+            bool genMac = MacIcnsCheckBox.IsChecked == true;
 
-            if (!genIco && !genAssets && !genAndroid)
+            if (!genIco && !genAssets && !genAndroid && !genFavicon && !genMac)
             {
                 ShowErrorDialog(_resourceLoader.GetString("ErrorNoParamsTitle"), _resourceLoader.GetString("ErrorNoParamsMessage"));
                 return;
@@ -349,7 +368,17 @@ namespace IconForge
                 AndroidBgImagePath = UseBgImageCheckBox.IsChecked == true ? _selectedBgImagePath : null,
                 GenerateWindowsIco = genIco,
                 GenerateWindowsAssets = genAssets,
-                GenerateAndroidAdaptive = genAndroid
+                GenerateAndroidAdaptive = genAndroid,
+                GenerateFaviconPackage = genFavicon,
+                GenerateMacIcns = genMac,
+                Brightness = (float)BrightnessSlider.Value,
+                Contrast = (float)ContrastSlider.Value,
+                IsGrayscale = GrayscaleCheckBox.IsChecked == true,
+                IsInverted = InvertCheckBox.IsChecked == true,
+                TintColorHex = TintColorTextBox.Text.Trim(),
+                CornerRadiusPercent = (float)CornerRadiusSlider.Value,
+                PaddingPercent = (float)PaddingSlider.Value,
+                HasDropShadow = DropShadowCheckBox.IsChecked == true
             };
 
             var startTime = DateTime.Now;
@@ -480,6 +509,214 @@ namespace IconForge
             catch
             {
                 // Ignore dialog exceptions
+            }
+        }
+
+        // --- New Feature Handlers ---
+
+        private void PresetComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (PresetComboBox == null || WindowsIcoCheckBox == null) return;
+
+            int idx = PresetComboBox.SelectedIndex;
+            switch (idx)
+            {
+                case 1: // Windows App
+                    WindowsIcoCheckBox.IsChecked = true;
+                    WindowsAssetsCheckBox.IsChecked = true;
+                    AndroidAdaptiveCheckBox.IsChecked = false;
+                    FaviconPackageCheckBox.IsChecked = false;
+                    MacIcnsCheckBox.IsChecked = false;
+                    ResetFilters();
+                    break;
+                case 2: // Web & Favicon Pack
+                    WindowsIcoCheckBox.IsChecked = true;
+                    FaviconPackageCheckBox.IsChecked = true;
+                    WindowsAssetsCheckBox.IsChecked = false;
+                    AndroidAdaptiveCheckBox.IsChecked = false;
+                    MacIcnsCheckBox.IsChecked = false;
+                    ResetFilters();
+                    break;
+                case 3: // macOS App (.icns)
+                    MacIcnsCheckBox.IsChecked = true;
+                    WindowsIcoCheckBox.IsChecked = true;
+                    WindowsAssetsCheckBox.IsChecked = false;
+                    AndroidAdaptiveCheckBox.IsChecked = false;
+                    FaviconPackageCheckBox.IsChecked = false;
+                    ResetFilters();
+                    break;
+                case 4: // Rounded Icon
+                    CornerRadiusSlider.Value = 20;
+                    PaddingSlider.Value = 8;
+                    DropShadowCheckBox.IsChecked = true;
+                    WindowsIcoCheckBox.IsChecked = true;
+                    break;
+            }
+            UpdateLivePreviews();
+        }
+
+        private void ResetFilters()
+        {
+            if (BrightnessSlider == null) return;
+            BrightnessSlider.Value = 0;
+            ContrastSlider.Value = 0;
+            CornerRadiusSlider.Value = 0;
+            PaddingSlider.Value = 0;
+            GrayscaleCheckBox.IsChecked = false;
+            InvertCheckBox.IsChecked = false;
+            DropShadowCheckBox.IsChecked = false;
+            TintColorTextBox.Text = "";
+        }
+
+        private void FilterSlider_ValueChanged(object sender, Microsoft.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
+        {
+            if (BrightnessValueText != null && BrightnessSlider != null) 
+                BrightnessValueText.Text = ((int)BrightnessSlider.Value).ToString();
+            if (ContrastValueText != null && ContrastSlider != null) 
+                ContrastValueText.Text = ((int)ContrastSlider.Value).ToString();
+            UpdateLivePreviews();
+        }
+
+        private void FilterOption_Changed(object sender, RoutedEventArgs e)
+        {
+            UpdateLivePreviews();
+        }
+
+        private void TintColorTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (TintColorTextBox == null || TintColorPreview == null) return;
+            string hex = TintColorTextBox.Text.Trim();
+            try
+            {
+                if (SkiaSharp.SKColor.TryParse(hex, out var color))
+                {
+                    TintColorPreview.Background = new SolidColorBrush(Windows.UI.Color.FromArgb(color.Alpha, color.Red, color.Green, color.Blue));
+                }
+                else
+                {
+                    TintColorPreview.Background = new SolidColorBrush(Microsoft.UI.Colors.Transparent);
+                }
+            }
+            catch
+            {
+                TintColorPreview.Background = new SolidColorBrush(Microsoft.UI.Colors.Transparent);
+            }
+            UpdateLivePreviews();
+        }
+
+        private void PreviewBg_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is string mode && PreviewGridContainer != null)
+            {
+                switch (mode)
+                {
+                    case "Dark":
+                        PreviewGridContainer.Background = new SolidColorBrush(Windows.UI.Color.FromArgb(255, 31, 31, 31));
+                        break;
+                    case "Light":
+                        PreviewGridContainer.Background = new SolidColorBrush(Windows.UI.Color.FromArgb(255, 243, 243, 243));
+                        break;
+                    default:
+                        PreviewGridContainer.Background = (Brush)Application.Current.Resources["ControlAltFillColorSecondaryBrush"];
+                        break;
+                }
+            }
+        }
+
+        private void UpdateLivePreviews()
+        {
+            if (string.IsNullOrEmpty(_selectedInputPath) || !File.Exists(_selectedInputPath) || Preview256 == null) return;
+
+            string path = _selectedInputPath;
+            float brightness = BrightnessSlider != null ? (float)BrightnessSlider.Value : 0;
+            float contrast = ContrastSlider != null ? (float)ContrastSlider.Value : 0;
+            bool isGrayscale = GrayscaleCheckBox?.IsChecked == true;
+            bool isInverted = InvertCheckBox?.IsChecked == true;
+            string tint = TintColorTextBox?.Text?.Trim() ?? "";
+            float rx = CornerRadiusSlider != null ? (float)CornerRadiusSlider.Value : 0;
+            float pad = PaddingSlider != null ? (float)PaddingSlider.Value : 0;
+            bool shadow = DropShadowCheckBox?.IsChecked == true;
+
+            Task.Run(() =>
+            {
+                try
+                {
+                    using var raw = SKBitmap.Decode(path);
+                    if (raw == null) return;
+
+                    using var filtered = IconProcessor.ApplyFiltersAndStyling(
+                        raw,
+                        brightness,
+                        contrast,
+                        isGrayscale,
+                        isInverted,
+                        tint,
+                        rx,
+                        pad,
+                        shadow);
+
+                    var img256 = RenderSkiaBitmapToBitmapImage(filtered, 256);
+                    var img48 = RenderSkiaBitmapToBitmapImage(filtered, 48);
+                    var img32 = RenderSkiaBitmapToBitmapImage(filtered, 32);
+                    var img16 = RenderSkiaBitmapToBitmapImage(filtered, 16);
+
+                    DispatcherQueue.TryEnqueue(() =>
+                    {
+                        Preview256.Source = img256;
+                        Preview48.Source = img48;
+                        Preview32.Source = img32;
+                        Preview16.Source = img16;
+                    });
+                }
+                catch { }
+            });
+        }
+
+        private static BitmapImage RenderSkiaBitmapToBitmapImage(SKBitmap bmp, int size)
+        {
+            using var resized = new SKBitmap(size, size);
+            using (var canvas = new SKCanvas(resized))
+            {
+                canvas.Clear(SKColors.Transparent);
+                using var paint = new SKPaint { FilterQuality = SKFilterQuality.High, IsAntialias = true };
+                canvas.DrawBitmap(bmp, new SKRect(0, 0, size, size), paint);
+            }
+            using var image = SKImage.FromBitmap(resized);
+            using var data = image.Encode(SKEncodedImageFormat.Png, 100);
+            using var ms = new MemoryStream(data.ToArray());
+
+            var bitmapImage = new BitmapImage();
+            var randomAccessStream = ms.AsRandomAccessStream();
+            bitmapImage.SetSource(randomAccessStream);
+            return bitmapImage;
+        }
+
+        private void ExtractButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(_selectedInputPath) || !File.Exists(_selectedInputPath)) return;
+            string outDir = OutputDirTextBox.Text.Trim();
+            if (string.IsNullOrEmpty(outDir))
+            {
+                ShowErrorDialog("Ошибка", "Выберите папку для сохранения извлеченных кадров.");
+                return;
+            }
+
+            try
+            {
+                Directory.CreateDirectory(outDir);
+                var frames = IconProcessor.ExtractIcoFrames(_selectedInputPath);
+                int count = 0;
+                foreach (var f in frames)
+                {
+                    string name = $"ico_frame_{f.Width}x{f.Height}.png";
+                    File.WriteAllBytes(Path.Combine(outDir, name), f.Data);
+                    count++;
+                }
+                ShowCompletionToast(outDir);
+            }
+            catch (Exception ex)
+            {
+                ShowErrorDialog("Ошибка извлечения", ex.Message);
             }
         }
     }

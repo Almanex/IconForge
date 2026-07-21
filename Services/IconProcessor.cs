@@ -19,6 +19,16 @@ namespace IconForge.Services
             public bool GenerateWindowsIco { get; set; }
             public bool GenerateWindowsAssets { get; set; }
             public bool GenerateAndroidAdaptive { get; set; }
+            public bool GenerateFaviconPackage { get; set; }
+            public bool GenerateMacIcns { get; set; }
+            public float Brightness { get; set; }
+            public float Contrast { get; set; }
+            public bool IsGrayscale { get; set; }
+            public bool IsInverted { get; set; }
+            public string? TintColorHex { get; set; }
+            public float CornerRadiusPercent { get; set; }
+            public float PaddingPercent { get; set; }
+            public bool HasDropShadow { get; set; }
         }
 
         public async Task ProcessAsync(ProcessingOptions options, Action<string, double> onProgress)
@@ -34,7 +44,17 @@ namespace IconForge.Services
                 Directory.CreateDirectory(options.OutputPath);
 
                 onProgress("Загрузка исходного изображения...", 0.05);
-                using SKBitmap baseBitmap = LoadBaseBitmap(options.InputPath);
+                using SKBitmap rawBitmap = LoadBaseBitmap(options.InputPath);
+                using SKBitmap baseBitmap = ApplyFiltersAndStyling(
+                    rawBitmap,
+                    options.Brightness,
+                    options.Contrast,
+                    options.IsGrayscale,
+                    options.IsInverted,
+                    options.TintColorHex,
+                    options.CornerRadiusPercent,
+                    options.PaddingPercent,
+                    options.HasDropShadow);
 
                 // Parse background color for Android
                 SKColor androidBgColor = SKColors.White;
@@ -220,6 +240,20 @@ namespace IconForge.Services
                         double subProgress = progress + 0.05 + (0.25 * ((double)currentDensityIdx / totalDensities));
                         onProgress($"Создан пакет Android mipmap ({d.Name}): ic_launcher.png", subProgress);
                     }
+                }
+
+                // --- 4. Generate Web & Favicon Package ---
+                if (options.GenerateFaviconPackage)
+                {
+                    onProgress("Генерация Web & Favicon Pack...", 0.85);
+                    GenerateFaviconPackage(baseBitmap, options.OutputPath);
+                }
+
+                // --- 5. Generate macOS .icns ---
+                if (options.GenerateMacIcns)
+                {
+                    onProgress("Генерация macOS .icns пакета...", 0.92);
+                    GenerateMacIcns(baseBitmap, options.OutputPath);
                 }
 
                 androidBgImage?.Dispose();
@@ -451,6 +485,294 @@ namespace IconForge.Services
                 canvas.DrawBitmap(baseBitmap, logoRect, logoPaint);
             }
             return playIcon;
+        }
+
+        public static SKBitmap ApplyFiltersAndStyling(
+            SKBitmap source,
+            float brightness = 0,
+            float contrast = 0,
+            bool isGrayscale = false,
+            bool isInverted = false,
+            string? tintColorHex = null,
+            float cornerRadiusPercent = 0,
+            float paddingPercent = 0,
+            bool hasDropShadow = false)
+        {
+            if (source == null) return new SKBitmap(256, 256);
+
+            int width = source.Width;
+            int height = source.Height;
+
+            // 1. Create filtered base
+            var filtered = new SKBitmap(width, height);
+            using (var canvas = new SKCanvas(filtered))
+            {
+                canvas.Clear(SKColors.Transparent);
+
+                using var paint = new SKPaint { IsAntialias = true };
+                var filtersList = new List<SKColorFilter>();
+
+                if (brightness != 0 || contrast != 0)
+                {
+                    float c = (100f + contrast) / 100f;
+                    float b = brightness / 255f;
+                    float[] matrix = new float[]
+                    {
+                        c, 0, 0, 0, b * 255f,
+                        0, c, 0, 0, b * 255f,
+                        0, 0, c, 0, b * 255f,
+                        0, 0, 0, 1, 0
+                    };
+                    filtersList.Add(SKColorFilter.CreateColorMatrix(matrix));
+                }
+
+                if (isGrayscale)
+                {
+                    filtersList.Add(SKColorFilter.CreateColorMatrix(new float[]
+                    {
+                        0.2126f, 0.7152f, 0.0722f, 0, 0,
+                        0.2126f, 0.7152f, 0.0722f, 0, 0,
+                        0.2126f, 0.7152f, 0.0722f, 0, 0,
+                        0, 0, 0, 1, 0
+                    }));
+                }
+
+                if (isInverted)
+                {
+                    filtersList.Add(SKColorFilter.CreateColorMatrix(new float[]
+                    {
+                        -1, 0, 0, 0, 255,
+                        0, -1, 0, 0, 255,
+                        0, 0, -1, 0, 255,
+                        0, 0, 0, 1, 0
+                    }));
+                }
+
+                if (!string.IsNullOrWhiteSpace(tintColorHex) && SKColor.TryParse(tintColorHex, out var tintColor) && tintColor.Alpha > 0)
+                {
+                    filtersList.Add(SKColorFilter.CreateBlendMode(tintColor, SKBlendMode.SrcIn));
+                }
+
+                if (filtersList.Count == 1)
+                {
+                    paint.ColorFilter = filtersList[0];
+                }
+                else if (filtersList.Count > 1)
+                {
+                    SKColorFilter current = filtersList[0];
+                    for (int i = 1; i < filtersList.Count; i++)
+                    {
+                        current = SKColorFilter.CreateCompose(filtersList[i], current);
+                    }
+                    paint.ColorFilter = current;
+                }
+
+                canvas.DrawBitmap(source, new SKRect(0, 0, width, height), paint);
+            }
+
+            if (cornerRadiusPercent <= 0 && paddingPercent <= 0 && !hasDropShadow)
+            {
+                return filtered;
+            }
+
+            var finalBitmap = new SKBitmap(width, height);
+            using (var canvas = new SKCanvas(finalBitmap))
+            {
+                canvas.Clear(SKColors.Transparent);
+
+                float pad = (Math.Min(width, height) * (paddingPercent / 100f)) / 2f;
+                var drawRect = new SKRect(pad, pad, width - pad, height - pad);
+                float rx = drawRect.Width * (cornerRadiusPercent / 100f);
+                float ry = drawRect.Height * (cornerRadiusPercent / 100f);
+
+                if (hasDropShadow)
+                {
+                    using var shadowPaint = new SKPaint
+                    {
+                        IsAntialias = true,
+                        ImageFilter = SKImageFilter.CreateDropShadow(0, 8, 12, 12, new SKColor(0, 0, 0, 100))
+                    };
+                    using var rpath = new SKPath();
+                    rpath.AddRoundRect(drawRect, rx, ry);
+                    canvas.DrawPath(rpath, shadowPaint);
+                }
+
+                using var fillPaint = new SKPaint { IsAntialias = true };
+
+                if (cornerRadiusPercent > 0)
+                {
+                    using var path = new SKPath();
+                    path.AddRoundRect(drawRect, rx, ry);
+                    canvas.ClipPath(path, antialias: true);
+                }
+
+                canvas.DrawBitmap(filtered, drawRect, fillPaint);
+            }
+
+            filtered.Dispose();
+            return finalBitmap;
+        }
+
+        private static void GenerateMacIcns(SKBitmap baseBitmap, string outputPath)
+        {
+            var icnsTypes = new (string FourCC, int Size)[]
+            {
+                ("ic10", 1024),
+                ("ic09", 512),
+                ("ic08", 256),
+                ("ic07", 128),
+                ("ic06", 64),
+                ("ic05", 32),
+                ("ic04", 16)
+            };
+
+            using var ms = new MemoryStream();
+            using var writer = new BinaryWriter(ms);
+
+            writer.Write(new char[] { 'i', 'c', 'n', 's' });
+            writer.Write((uint)0);
+
+            foreach (var item in icnsTypes)
+            {
+                using var resized = ResizeBitmap(baseBitmap, item.Size, item.Size, item.Size <= 48);
+                byte[] pngBytes = EncodeToPng(resized);
+
+                foreach (char c in item.FourCC) writer.Write((byte)c);
+                uint blockSize = (uint)(8 + pngBytes.Length);
+                writer.Write(SwapEndian(blockSize));
+                writer.Write(pngBytes);
+            }
+
+            uint totalLength = (uint)ms.Length;
+            ms.Position = 4;
+            writer.Write(SwapEndian(totalLength));
+
+            string macDir = Path.Combine(outputPath, "macOS");
+            Directory.CreateDirectory(macDir);
+            File.WriteAllBytes(Path.Combine(macDir, "app_icon.icns"), ms.ToArray());
+        }
+
+        private static uint SwapEndian(uint value)
+        {
+            return ((value & 0x000000FF) << 24) |
+                   ((value & 0x0000FF00) << 8) |
+                   ((value & 0x00FF0000) >> 8) |
+                   ((value & 0xFF000000) >> 24);
+        }
+
+        private static void GenerateFaviconPackage(SKBitmap baseBitmap, string outputPath)
+        {
+            string webDir = Path.Combine(outputPath, "WebFavicon");
+            Directory.CreateDirectory(webDir);
+
+            var icoSizes = new[] { 16, 32, 48 };
+            var frames = new List<IcoEncoder.IcoFrame>();
+            foreach (var size in icoSizes)
+            {
+                using var resized = ResizeBitmap(baseBitmap, size, size, true);
+                frames.Add(new IcoEncoder.IcoFrame
+                {
+                    PngData = EncodeToPng(resized),
+                    Width = size,
+                    Height = size
+                });
+            }
+            using (var fs = File.Create(Path.Combine(webDir, "favicon.ico")))
+            {
+                IcoEncoder.Encode(frames, fs);
+            }
+
+            var pngOutputs = new (string Filename, int Size)[]
+            {
+                ("favicon-16x16.png", 16),
+                ("favicon-32x32.png", 32),
+                ("apple-touch-icon.png", 180),
+                ("android-chrome-192x192.png", 192),
+                ("android-chrome-512x512.png", 512)
+            };
+
+            foreach (var item in pngOutputs)
+            {
+                using var resized = ResizeBitmap(baseBitmap, item.Size, item.Size, item.Size <= 48);
+                File.WriteAllBytes(Path.Combine(webDir, item.Filename), EncodeToPng(resized));
+            }
+
+            string manifest = @"{
+  ""name"": ""IconForge App"",
+  ""short_name"": ""IconForge"",
+  ""icons"": [
+    {
+      ""src"": ""/android-chrome-192x192.png"",
+      ""sizes"": ""192x192"",
+      ""type"": ""image/png""
+    },
+    {
+      ""src"": ""/android-chrome-512x512.png"",
+      ""sizes"": ""512x512"",
+      ""type"": ""image/png""
+    }
+  ],
+  ""theme_color"": ""#ffffff"",
+  ""background_color"": ""#ffffff"",
+  ""display"": ""standalone""
+}";
+            File.WriteAllText(Path.Combine(webDir, "site.webmanifest"), manifest);
+        }
+
+        public static List<(int Width, int Height, byte[] Data)> ExtractIcoFrames(string icoPath)
+        {
+            var results = new List<(int Width, int Height, byte[] Data)>();
+            if (!File.Exists(icoPath)) return results;
+
+            byte[] bytes = File.ReadAllBytes(icoPath);
+            if (bytes.Length < 6) return results;
+
+            ushort reserved = BitConverter.ToUInt16(bytes, 0);
+            ushort type = BitConverter.ToUInt16(bytes, 2);
+            ushort count = BitConverter.ToUInt16(bytes, 4);
+
+            if (type != 1) return results;
+
+            int offset = 6;
+            for (int i = 0; i < count; i++)
+            {
+                if (offset + 16 > bytes.Length) break;
+
+                byte width = bytes[offset];
+                byte height = bytes[offset + 1];
+                int realWidth = width == 0 ? 256 : width;
+                int realHeight = height == 0 ? 256 : height;
+
+                uint bytesInRes = BitConverter.ToUInt32(bytes, offset + 8);
+                uint imageOffset = BitConverter.ToUInt32(bytes, offset + 12);
+
+                if (imageOffset + bytesInRes <= bytes.Length)
+                {
+                    byte[] imageData = new byte[bytesInRes];
+                    Array.Copy(bytes, (int)imageOffset, imageData, 0, (int)bytesInRes);
+
+                    if (imageData.Length > 8 && imageData[0] == 0x89 && imageData[1] == 0x50 && imageData[2] == 0x4E && imageData[3] == 0x47)
+                    {
+                        results.Add((realWidth, realHeight, imageData));
+                    }
+                    else
+                    {
+                        try
+                        {
+                            using var bmp = SKBitmap.Decode(imageData);
+                            if (bmp != null)
+                            {
+                                results.Add((realWidth, realHeight, EncodeToPng(bmp)));
+                            }
+                        }
+                        catch { }
+                    }
+                }
+
+                offset += 16;
+            }
+
+            return results;
         }
     }
 }
