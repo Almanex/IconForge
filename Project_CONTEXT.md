@@ -1,42 +1,30 @@
-# Project Context - IconForge
+# Project Context: IconForge
 
-This document provides developer-focused coding context and architecture guidelines for IconForge.
+## Core Application Overview
+IconForge is a high-performance native Windows 11 utility written in C# and WinUI 3 (Windows App SDK 1.6 / 2.2). It performs batch multi-platform icon package generation, reverse ICO layer extraction, live multi-size preview rendering, and image filtering/recoloring from single source files (PNG, SVG, ICO).
 
-## Overview
-IconForge is a native C# and WinUI 3 (Windows App SDK) desktop utility designed for batch-generating icon files for Windows and Android from a single raster (PNG) or vector (SVG) source image.
+## Architecture & Code Map
+- **UI Platform:** WinUI 3, `MainPage.xaml`, `MainPage.xaml.cs`, `MainWindow.xaml`, `MainWindow.xaml.cs`.
+- **Graphics Engine:** SkiaSharp (`SKBitmap`, `SKCanvas`, `SKColorFilter`, `SKPaint`), `Svg.Skia` for vector rendering.
+- **Icon Processor (`Services/IconProcessor.cs`):**
+  - `ProcessAsync(ProcessingOptions options, Action<string, double> onProgress)`: Primary asynchronous execution pipeline.
+  - `ApplyFiltersAndStyling(...)`: Color matrices for Brightness, Contrast, Grayscale, Invert, SVG Tinting, Corner Radius %, Padding %, and Drop Shadow.
+  - `GenerateFaviconPackage(...)`: Generates `favicon.ico`, `apple-touch-icon.png`, `android-chrome-*.png`, and `site.webmanifest`.
+  - `GenerateMacIcns(...)`: Encodes binary Apple `.icns` container files (`ic04` through `ic10`).
+  - `ExtractIcoFrames(...)`: Parses binary ICO headers/directories and extracts PNG/BMP layers.
+  - `LoadBaseBitmap(...)`: Decodes raster and vector SVG formats into 1024x1024 base Skia canvas.
+- **Single-File PRI Extractor (`App.xaml.cs` & `IconForge.csproj`):**
+  - Custom build target `BundlePriInSingleFile` in `.csproj` injects `IconForge.pri` into `@(ResolvedFileToPublish)` under relative path `resources.pri`.
+  - `EnsureResourcesPriExtracted()` in `App()` extracts `resources.pri` at startup to `AppContext.BaseDirectory` before MRT Core initializes, enabling standalone execution under any EXE name.
+- **Shell Integration (`Helpers/ShellIntegration.cs`):**
+  - Manages Windows Explorer context menu shortcuts registered in `HKEY_CURRENT_USER\Software\Classes\*\shell\IconForge`.
 
-## Technology Stack
-- **Language:** C# (.NET 8.0)
-- **Target OS:** Windows 10/11 (`net8.0-windows10.0.26100.0` target framework)
-- **UI Platform:** WinUI 3 (Windows App SDK 2.2.0)
-- **Graphics Engine:** SkiaSharp (for Lanczos3 scaling and contour sharpening filters)
-- **Vector Rendering:** Svg.Skia (renders SVGs into raster surfaces)
+## Supported Target Formats
+1. **Windows Classic ICO:** Multi-resolution `.ico` container (`16x16` to `256x256`) with micro-contour sharpening for small resolutions.
+2. **Windows Modern Assets:** UWP/WinUI manifest PNG logos (`Square44x44Logo`, `Square150x150Logo`, `StoreLogo`) at `scale-100` through `scale-400`.
+3. **Web & Favicon Pack:** `favicon.ico`, `favicon-16x16.png`, `favicon-32x32.png`, `apple-touch-icon.png`, `android-chrome-192x192.png`, `android-chrome-512x512.png`, and `site.webmanifest`.
+4. **macOS ICNS:** Native Apple binary container `.icns`.
+5. **Android Adaptive & Legacy:** Layered `Foreground.png` (safe-zone 72dp), `Background.png`, `mipmap` folders (`mdpi` to `xxxhdpi`), round legacy `ic_launcher.png`, and Google Play `512x512`.
 
-## Directory Structure
-```text
-icoboo/
-├── Assets/              # Branding and system app icon files
-├── docs/                # Project documentation and guides (Russian, German, English)
-├── Helpers/             # Custom utility helpers (e.g., ShellIntegration)
-├── Properties/          # Launch configurations and build settings
-├── Services/            # Core processing engine (e.g., IconProcessor)
-├── Strings/             # System resource dictionaries for multi-language (RU/EN/DE)
-├── App.xaml             # Application startup configuration
-├── IconForge.csproj     # MSBuild project file
-├── MainPage.xaml        # Main workspace UI
-└── MainWindow.xaml      # Main window frame
-```
-
-## Key Architectural Points
-- **Unpackaged Deployment:** The app is configured with `<WindowsPackageType>None</WindowsPackageType>` and `<SelfContained>true</SelfContained>`. It runs without needing a global Windows App Runtime installation.
-- **Bootstrapper:** Standard bootstrapper initialization is implicitly managed via Windows App SDK build targets.
-- **Resource Copying:** The `Assets/` directory is copied next to the single-file executable using a custom MSBuild post-publish target (`CopyAssetsToPublish`). The folder must sit adjacent to the executable at runtime.
-- **Localization:** UI strings are dynamically loaded using `ResourceLoader`. XAML elements are localized via `x:Uid` identifiers mapping to `Strings/{locale}/Resources.resw`.
-
-## Common Tasks
-- **Build:** `dotnet build`
-- **Run:** `dotnet run`
-- **Publish Release:**
-  ```powershell
-  dotnet publish -c Release -r win-x64 --self-contained true
-  ```
+## Localization
+Supports English (`en-US`), Russian (`ru-RU`), and German (`de-DE`) managed through `.resw` resource files.

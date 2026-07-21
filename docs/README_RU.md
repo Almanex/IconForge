@@ -1,63 +1,77 @@
+[README_RU](README_RU.md) | [README_DE](README_DE.md) | [README_EN](../README.md) | [GUIDE_RU](GUIDE_RU.md) | [GUIDE_DE](GUIDE_DE.md) | [GUIDE_EN](GUIDE.md)
+
 # IconForge
 
-*Нативный генератор иконок для Windows 11*
+*Нативный мультиформатный генератор иконок и утилита обработки изображений для Windows 11*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Platform: Windows](https://img.shields.io/badge/Platform-Windows%2010%20%2F%2011-blue)](https://www.microsoft.com/windows)
 [![Framework: .NET 8.0](https://img.shields.io/badge/Framework-.NET%208.0-blue)](https://dotnet.microsoft.com/download)
 [![UI: WinUI 3](https://img.shields.io/badge/UI-WinUI%203-blue)](https://learn.microsoft.com/windows/apps/winui/winui3/)
-[![Share](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2FAlmanex%2Ficoboo)](https://twitter.com/intent/tweet?text=Check%20out%20IconForge%20-%20A%20native%20icon%20generator%20for%20Windows%2011!&url=https%3A%2F%2Fgithub.com%2FAlmanex%2Ficoboo)
+[![Release: v1.0.2](https://img.shields.io/badge/Release-v1.0.2-brightgreen)](https://github.com/Almanex/icoboo/releases/tag/v1.0.2)
 
-IconForge — это легкое нативное Windows-приложение (утилита), разработанное на фреймворке WinUI 3 (Windows App SDK) и C#, с полной поддержкой 3 языков интерфейса (русский, английский, немецкий). Оно предназначено для пакетной генерации наборов иконок для Windows (`.ico`, `Assets`) и Android (`Adaptive Icons`) из одного исходного изображения формата PNG или SVG.
+IconForge — это легкое нативное приложение для Windows 11, разработанное на языке C# и фреймворке WinUI 3 (Windows App SDK). Приложение поддерживает 3 языка интерфейса (русский, английский, немецкий) и предназначено для автоматической генерации пакетов иконок для Windows (`.ico`, `Assets`), Web (`Favicon Pack`), macOS (`.icns`) и Android (`Adaptive Icons`) из одного исходного файла PNG, SVG или ICO.
 
-Подробное описание всех настроек и возможностей см. в [Руководстве пользователя](GUIDE_RU.md).
+Подробное пошаговое руководство см. в [Руководстве пользователя](GUIDE_RU.md).
 
 ---
 
 ## Основные возможности
 
-### Генерация пакетов иконок
+### Кроссплатформенная генерация иконок
 
 * **Windows (Классический .ico):**
-  * Сборка мультиформатного `.ico` файла, содержащего разрешения: `16x16`, `24x24`, `32x32`, `48x48`, `64x64`, `128x128`, `256x256` пикселей.
-  * **Микро-шарпинг:** Для мелких размеров (16-48px) автоматически применяется специальный контурный фильтр резкости, чтобы иконка не размывалась в Проводнике Windows.
+  * Мультиформатный контейнер `.ico` с разрешениями: `16x16`, `24x24`, `32x32`, `48x48`, `64x64`, `128x128`, `256x256` пикселей.
+  * **Микро-шарпинг:** Автоматическое применение фильтра контурной резкости для мелких размеров (16-48px), исключающее размытие в Проводнике Windows.
 * **Windows Modern Assets (PNG):**
-  * Экспорт отдельных изображений для манифеста современных Windows-приложений (`Square44x44Logo`, `Square150x150Logo`, `StoreLogo`) во всех системных масштабах: `scale-100`, `scale-125`, `scale-150`, `scale-200`, `scale-400`.
+  * Экспорт логотипов для манифеста UWP/WinUI приложений (`Square44x44Logo`, `Square150x150Logo`, `StoreLogo`) во всех системных масштабах: `scale-100`, `scale-125`, `scale-150`, `scale-200`, `scale-400`.
+* **Web & Favicon Pack:**
+  * Полный веб-пакет иконок: `favicon.ico`, `favicon-16x16.png`, `favicon-32x32.png`, `apple-touch-icon.png` (180x180), `android-chrome-192x192.png`, `android-chrome-512x512.png` и файл манифеста `site.webmanifest`.
+* **macOS App Icon (.icns):**
+  * Бинарный энкодер иконки Apple `.icns` с блоками разрешений `ic04`, `ic05`, `ic06`, `ic07`, `ic08`, `ic09`, `ic10`.
 * **Android (Adaptive и Legacy Icons):**
-  * Разделение слоев: логотип автоматически позиционируется внутри безопасной зоны (safe-zone 72dp) слоя `Foreground.png`, а слой `Background.png` заливается выбранным цветом или текстурным файлом.
-  * Экспорт по структуре папок проекта (`mipmap-mdpi` до `mipmap-xxxhdpi`).
-  * Генерация круглой Legacy-иконки (`ic_launcher.png`) путем маскирования и наложения слоев.
-  * Экспорт промо-иконки для Google Play Console в размере `512x512` пикселей.
+  * Разделение слоев: безопасное позиционирование логотипа внутри зоны (72dp) слоя `Foreground.png` и заливка слоя `Background.png` выбранным цветом или изображением.
+  * Структурированное дерево папок `mipmap-mdpi` — `mipmap-xxxhdpi`.
+  * Круглая Legacy-иконка (`ic_launcher.png`) и промо-иконка Google Play `512x512`.
 
-### Современный интерфейс Windows 11 (UI/UX)
+### Фильтры и коррекция изображений
 
-* Использование системного полупрозрачного материала Mica Alt (адаптируется под обои рабочего стола).
-* Полная поддержка системной Темной и Светлой темы Windows 11.
-* Интерактивная зона Drag-and-Drop с динамическим изменением цвета границ и встроенным превью для файлов PNG/SVG.
-* Быстрые палитры (свотчи) для выбора фонового цвета Android-иконки.
+* **Регулировки яркости и контраста:** Плавные ползунки Яркости (-100..+100) и Контраста (-100..+100).
+* **Скругление и отступы:** Настройка радиуса скругления углов (0..50%) и внутренних отступов (0..40%).
+* **Эффекты:** Черно-белый режим (Grayscale), Инверсия цветов и Тень (Drop Shadow).
+* **SVG Tinting (Тинтинг):** Произвольная перекраска векторных и растровых иконок по Hex-коду.
 
-### Системная интеграция (Shell Integration)
+### Сетка живого предпросмотра (Live Preview)
 
-* **Контекстное меню Проводника:** Опция встраивания пункта "Сгенерировать иконки в IconForge" прямо в меню Проводника Windows при правом клике на PNG/SVG. Регистрация происходит локально в кусте `HKEY_CURRENT_USER` и не требует прав администратора (UAC).
-* **Всплывающие уведомления (Toast):** По окончании работы приложение отправляет нативное всплывающее уведомление Windows 11 с интерактивной кнопкой "Открыть папку".
+* Одновременный вывод предпросмотра в стандартах `16x16`, `32x32`, `48x48`, `256x256`.
+* **Переключение фона:** Прозрачный (шахматка), Темный (#1F1F1F), Светлый (#F3F3F3) и Цвет фонового слоя Android.
+
+### Извлечение кадров из ICO (Reverse Extraction)
+
+* Автоматическое переключение в режим извлечения при выборе или перетаскивании файла `.ico`.
+* Чтение встроенных слоев и экспорт всех кадров в отдельные PNG-файлы.
+
+### Интеграция с Windows 11 и единый EXE
+
+* **Mica Alt & Dark/Light темы:** Адаптивный Fluent Design материал.
+* **Контекстное меню Проводника:** Пункт "Сгенерировать иконки в IconForge" в меню Explorer без прав администратора.
+* **Одиночный файл EXE:** Полностью автономный бинарный файл (`IconForge_v1.0.2_win-x64.exe`). Таблица ресурсов `resources.pri` встроена внутрь `.exe`, позволяя переименовывать и переносить файл в любую папку.
 
 ---
 
 ## Стек технологий
 
-| Компонент / Слой | Технология | Описание / Назначение |
+| Компонент | Технология | Описание |
 | --- | --- | --- |
-| Язык | C# (.NET 8.0) | net8.0-windows целевой фреймворк |
-| UI-платформа | WinUI 3 | Windows App SDK 2.2.0 |
-| Графика | SkiaSharp | Lanczos3-ресайз и фильтрация |
-| Векторная графика | Svg.Skia | Отрисовка векторной графики в растр |
-| Тип приложения | Unpackaged Self-Contained | Запуск без глобальной установки Windows App Runtime |
+| Язык / Фреймворк | C# (.NET 8.0) | Target `net8.0-windows10.0.26100.0` |
+| UI-платформа | WinUI 3 | Windows App SDK 1.6 / 2.2 |
+| Графический движок | SkiaSharp | Сэмплинг (Lanczos3), цветовые матрицы |
+| Векторная графика | Svg.Skia | Высокоточное растеризование SVG |
+| Сборка | Single-File Executable | Автономный исполняемый `.exe` |
 
 ---
 
-## Структура экспорта файлов
-
-После генерации в выбранной папке создается следующая структура каталогов:
+## Структура экспорта
 
 ```text
 [Папка_Назначения]/
@@ -65,73 +79,43 @@ IconForge — это легкое нативное Windows-приложение 
 │   ├── app_icon.ico
 │   └── Assets/
 │       ├── Square44x44Logo.scale-100.png
-│       ├── Square44x44Logo.scale-200.png
-│       └── ... (все логотипы во всех масштабах)
+│       └── ...
+├── Web/
+│   ├── favicon.ico
+│   ├── favicon-16x16.png
+│   ├── favicon-32x32.png
+│   ├── apple-touch-icon.png
+│   ├── android-chrome-192x192.png
+│   ├── android-chrome-512x512.png
+│   └── site.webmanifest
+├── macOS/
+│   └── app_icon.icns
 └── Android/
     ├── play_store_512.png
     └── res/
         ├── mipmap-mdpi/
-        │   ├── ic_launcher.png
-        │   ├── ic_launcher_background.png
-        │   └── ic_launcher_foreground.png
-        └── mipmap-xxxhdpi/ ...
+        └── mipmap-xxxhdpi/
 ```
 
 ---
 
-## Как собрать и запустить
+## Сборка и запуск
 
-### Требования
+```powershell
+git clone https://github.com/Almanex/icoboo.git
+cd icoboo
+dotnet build
+dotnet run
+```
 
-* [.NET 8.0 SDK](https://dotnet.microsoft.com/download) или новее.
+### Автономная публикация в 1 файл
 
-### Сборка и запуск из консоли
-
-1. Клонируйте репозиторий:
-   ```powershell
-   git clone https://github.com/Almanex/icoboo.git
-   cd icoboo
-   ```
-2. Скомпилируйте проект:
-   ```powershell
-   dotnet build
-   ```
-3. Запустите приложение:
-   ```powershell
-   dotnet run
-   ```
-
-### Публикация (Self-Contained EXE с ресурсами)
-
-Для генерации единого исполняемого пакета:
 ```powershell
 dotnet publish -c Release -r win-x64 --self-contained true
 ```
-Эта компиляция объединяет сборки в один исполняемый файл `IconForge.exe` и копирует папку `Assets/` рядом с ним в каталог `publish/`.
-
-> [!IMPORTANT]
-> Папка `Assets/` **обязательно** должна находиться в одной директории с `IconForge.exe`, чтобы приложение могло загрузить графические ресурсы интерфейса и успешно запуститься. При распространении программы упаковывайте исполняемый файл и папку `Assets/` вместе (например, в ZIP-архив).
-
----
-
-## Участие в разработке
-
-Будем рады вашему участию! Создавайте issue или присылайте pull request, если хотите предложить улучшения.
-
----
-
-## Версионирование
-
-Мы используем [SemVer](https://semver.org/) для версионирования. Доступные версии можно посмотреть по тегам в этом репозитории.
-
----
-
-## Авторы
-
-* **Almanex** - *Начальная разработка* - [Профиль Almanex](https://github.com/Almanex)
 
 ---
 
 ## Лицензия
 
-Этот проект лицензирован по лицензии MIT - подробности см. в файле `LICENSE`.
+Проект распространяется по лицензии [MIT](LICENSE).

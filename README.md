@@ -1,138 +1,129 @@
-[README_RU](docs/README_RU.md) | [README_DE](docs/README_DE.md) | [README_EN](README.md) | [GUIDE_RU](docs/GUIDE_RU.md) | [GUIDE_DE](docs/GUIDE_DE.md) | [GUIDE_EN](docs/GUIDE_EN.md)
+[README_RU](docs/README_RU.md) | [README_DE](docs/README_DE.md) | [README_EN](README.md) | [GUIDE_RU](docs/GUIDE_RU.md) | [GUIDE_DE](docs/GUIDE_DE.md) | [GUIDE_EN](docs/GUIDE.md)
+
 # IconForge
 
-*Native icon generator for Windows 11*
+*Native multi-format icon generator and image processing utility for Windows 11*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Platform: Windows](https://img.shields.io/badge/Platform-Windows%2010%20%2F%2011-blue)](https://www.microsoft.com/windows)
 [![Framework: .NET 8.0](https://img.shields.io/badge/Framework-.NET%208.0-blue)](https://dotnet.microsoft.com/download)
 [![UI: WinUI 3](https://img.shields.io/badge/UI-WinUI%203-blue)](https://learn.microsoft.com/windows/apps/winui/winui3/)
-[![Share](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2FAlmanex%2Ficoboo)](https://twitter.com/intent/tweet?text=Check%20out%20IconForge%20-%20A%20native%20icon%20generator%20for%20Windows%2011!&url=https%3A%2F%2Fgithub.com%2FAlmanex%2Ficoboo)
+[![Release: v1.0.2](https://img.shields.io/badge/Release-v1.0.2-brightgreen)](https://github.com/Almanex/icoboo/releases/tag/v1.0.2)
 
-IconForge is a lightweight native Windows application developed on the WinUI 3 (Windows App SDK) framework and C#, supporting 3 languages (English, Russian, German) out of the box. It is designed for batch generation of icon sets for Windows (`.ico`, `Assets`) and Android (`Adaptive Icons`) from a single source image in PNG or SVG format.
+IconForge is a lightweight, native Windows 11 application built with C# and WinUI 3 (Windows App SDK). Out of the box, it features complete tri-lingual support (English, Russian, German) and is designed for automated generation of icon packages for Windows (`.ico`, `Assets`), Web (`Favicon Pack`), macOS (`.icns`), and Android (`Adaptive Icons`) from a single source image (PNG, SVG, or ICO).
 
-For a detailed walkthrough of all options and features, see the [User Guide](docs/GUIDE.md).
+For a detailed step-by-step walkthrough, see the [User Guide](docs/GUIDE.md).
 
 ---
 
-## Main Features
+## Key Features
 
-### Generating Icon Packs
+### Multi-Platform Icon Generation
 
 * **Windows (Classic .ico):**
-  * Build a multi-format `.ico` file containing resolutions: `16x16`, `24x24`, `32x32`, `48x48`, `64x64`, `128x128`, `256x256` pixels.
-  * **Micro-sharpening:** For small sizes (16-48px), a special contour sharpening filter is automatically applied to prevent blurriness in Windows Explorer.
+  * Multi-resolution `.ico` container with sizes: `16x16`, `24x24`, `32x32`, `48x48`, `64x64`, `128x128`, `256x256` pixels.
+  * **Micro-sharpening:** Automatically applies an edge-sharpening contour filter for small resolutions (16-48px) to prevent blurriness in Windows Explorer.
 * **Windows Modern Assets (PNG):**
-  * Export individual images for the manifest of modern Windows applications (`Square44x44Logo`, `Square150x150Logo`, `StoreLogo`) at all system scales: `scale-100`, `scale-125`, `scale-150`, `scale-200`, `scale-400`.
+  * Individual PNG assets for UWP/WinUI app manifest (`Square44x44Logo`, `Square150x150Logo`, `StoreLogo`) across all system display scale factors: `scale-100`, `scale-125`, `scale-150`, `scale-200`, `scale-400`.
+* **Web & Favicon Pack:**
+  * Complete web icon package including `favicon.ico`, `favicon-16x16.png`, `favicon-32x32.png`, `apple-touch-icon.png` (180x180), `android-chrome-192x192.png`, `android-chrome-512x512.png`, and an auto-generated `site.webmanifest`.
+* **macOS App Icon (.icns):**
+  * Native binary encoder generating Apple `.icns` containers with `ic04`, `ic05`, `ic06`, `ic07`, `ic08`, `ic09`, and `ic10` resolution blocks.
 * **Android (Adaptive and Legacy Icons):**
-  * Layer separation: the logo is automatically positioned inside the safe-zone (72dp) of the `Foreground.png` layer, and the `Background.png` layer is filled with the selected color or a texture file.
-  * Export by project folder structure (`mipmap-mdpi` to `mipmap-xxxhdpi`).
-  * Generate a round Legacy icon (`ic_launcher.png`) by masking and layering.
-  * Export promo icon for Google Play Console in size `512x512` pixels.
+  * Layer separation: places the source artwork within the safe zone (72dp) of `Foreground.png`, while `Background.png` is filled with a solid color or custom background image.
+  * Mipmap folder tree generation (`mipmap-mdpi` through `mipmap-xxxhdpi`).
+  * Round Legacy icon (`ic_launcher.png`) and Google Play Console `512x512` promo icon.
 
-### Modern Windows 11 Interface (UI/UX)
+### Real-Time Filters & Styling Engine
 
-* Translucent Mica Alt system material (adapts to desktop wallpaper).
-* Full support for Windows 11 system Dark and Light themes.
-* Interactive Drag-and-Drop zone with dynamic border color changes and built-in preview for PNG/SVG files.
-* Quick color swatches for choosing the background color of Android adaptive icons.
+* **Image Adjustments:** Real-time sliders for Brightness (-100 to +100) and Contrast (-100 to +100).
+* **Corner Radius & Padding:** Adjustable corner rounding (0 to 50%) and artwork padding (0 to 40%).
+* **Visual Effects:** One-click Toggles for Grayscale, Color Inversion, and Drop Shadow.
+* **SVG Tinting & Recolor:** Custom Hex color picker to tint vector and raster icons.
 
-### System Integration (Shell Integration)
+### Multi-Size Live Pixel Preview Grid
 
-* **Explorer context menu:** Option to embed the "Generate icons in IconForge" item directly into the Windows Explorer menu when right-clicking a PNG/SVG file. Registration occurs locally in the `HKEY_CURRENT_USER` hive and does not require administrator rights (UAC).
-* **Toast Notifications:** When processing is complete, the app sends a native Windows 11 toast notification with an interactive button to open the destination folder.
+* Simultaneous live preview rendering at standard pixel sizes: `16x16`, `32x32`, `48x48`, `256x256`.
+* **Background Mode Switcher:** Instant toggling between Transparent (checkerboard), Dark (#1F1F1F), Light (#F3F3F3), and Custom Project Background Color.
+
+### Reverse ICO Frame Extraction
+
+* Dragging or opening any `.ico` file automatically triggers **ICO Extraction Mode**.
+* Reads binary directory structures and extracts all embedded PNG/BMP layers into standalone PNG files.
+
+### Windows 11 Integration & Single-File Binary
+
+* **Mica Alt & Dark/Light Theme:** Fluent Design visual material adapting dynamically to system theme.
+* **Explorer Context Menu:** Right-click integration ("Generate icons in IconForge") registered under `HKEY_CURRENT_USER` (no admin rights required).
+* **Single Standalone Executable:** Fully bundled self-contained `.exe` (`IconForge_v1.0.2_win-x64.exe`). `resources.pri` is extracted automatically at startup, allowing the EXE to be renamed and executed anywhere without companion folders.
 
 ---
 
-## Tech Stack
+## Technology Stack
 
-| Layer / Component | Technology | Details / Purpose |
+| Component | Technology | Purpose |
 | --- | --- | --- |
-| Language | C# (.NET 8.0) | net8.0-windows target framework |
-| UI Platform | WinUI 3 | Windows App SDK 2.2.0 |
-| Graphics Rendering | SkiaSharp | Lanczos3 resize and filtering |
-| SVG Rendering | Svg.Skia | Rendering vector graphics to raster |
-| Packaging Type | Unpackaged Self-Contained | Runs without global Windows App Runtime installation |
+| Framework | C# (.NET 8.0) | `net8.0-windows10.0.26100.0` target |
+| UI Framework | WinUI 3 | Windows App SDK 1.6 / 2.2 |
+| Graphics Engine | SkiaSharp | Resampling (Lanczos3), filters, and color matrices |
+| SVG Engine | Svg.Skia | High-precision vector rasterization |
+| Packaging | Single-File Executable | Bundled unpackaged self-contained binary |
 
 ---
 
-## File Export Structure
-
-After generation, the following directory structure is created in the selected destination folder:
+## Export File Structure
 
 ```text
-[Destination_Folder]/
+[Destination_Directory]/
 ├── Windows/
 │   ├── app_icon.ico
 │   └── Assets/
 │       ├── Square44x44Logo.scale-100.png
 │       ├── Square44x44Logo.scale-200.png
-│       └── ... (all assets in all scales)
+│       └── ... (all scales)
+├── Web/
+│   ├── favicon.ico
+│   ├── favicon-16x16.png
+│   ├── favicon-32x32.png
+│   ├── apple-touch-icon.png
+│   ├── android-chrome-192x192.png
+│   ├── android-chrome-512x512.png
+│   └── site.webmanifest
+├── macOS/
+│   └── app_icon.icns
 └── Android/
     ├── play_store_512.png
     └── res/
         ├── mipmap-mdpi/
-        │   ├── ic_launcher.png
-        │   ├── ic_launcher_background.png
-        │   └── ic_launcher_foreground.png
-        └── mipmap-xxxhdpi/ ...
+        └── mipmap-xxxhdpi/
 ```
 
 ---
 
-## Getting Started
+## Building and Running
 
 ### Prerequisites
 
 * [.NET 8.0 SDK](https://dotnet.microsoft.com/download) or later.
 
-### Building and Running from Console
+### Console Build & Run
 
-1. Clone the repository:
-   ```powershell
-   git clone https://github.com/Almanex/icoboo.git
-   cd icoboo
-   ```
-2. Compile the project:
-   ```powershell
-   dotnet build
-   ```
-3. Launch the application:
-   ```powershell
-   dotnet run
-   ```
+```powershell
+git clone https://github.com/Almanex/icoboo.git
+cd icoboo
+dotnet build
+dotnet run
+```
 
-### Publishing (Self-Contained EXE with Assets)
+### Standalone Single-File Release Build
 
-To generate a single executable package:
 ```powershell
 dotnet publish -c Release -r win-x64 --self-contained true
 ```
-This compilation merges assemblies into a single executable `IconForge.exe` and copies the `Assets/` folder alongside it inside the `publish/` directory.
-
-> [!IMPORTANT]
-> The `Assets/` folder **must** be kept in the same directory as `IconForge.exe` for the application to load UI assets and start successfully. When distributing the app, package both the executable and the `Assets/` directory together (e.g., in a ZIP archive).
-
----
-
-## Contributing
-
-We welcome contributions! Please open an issue or submit a pull request if you want to improve the application.
-
----
-
-## Versioning
-
-We use [SemVer](https://semver.org/) for versioning. For the versions available, see the tags on this repository.
-
----
-
-## Authors
-
-* **Almanex** - *Initial development* - [Almanex Profile](https://github.com/Almanex)
+This produces a single executable `IconForge.exe` inside `bin/Release/.../publish/`. All MRT Core resource files (`resources.pri`) are bundled inside the `.exe`.
 
 ---
 
 ## License
 
-This project is licensed under the MIT License - see the `LICENSE` file for details.
+Licensed under the [MIT License](LICENSE).

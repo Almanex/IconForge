@@ -1,78 +1,93 @@
 # IconForge Benutzerhandbuch
 
-Willkommen beim Benutzerhandbuch für **IconForge**. Dieses Dokument bietet Schritt-für-Schritt-Anleitungen und technische Details, um die Anwendung optimal zu nutzen.
+Willkommen beim **IconForge**-Benutzerhandbuch! Dieses Dokument bietet eine detaillierte Anleitung zur Nutzung aller Funktionen von IconForge v1.0.2.
 
 ---
 
-## 1. Schnellstart-Workflow
-
-IconForge ist so konzipiert, dass es einfach und schnell zu bedienen ist:
-
-1. **Quelldatei auswählen:** Ziehen Sie ein PNG- oder SVG-Bild per Drag-and-Drop in den gestrichelten Ablagebereich oder klicken Sie auf **"Datei auf der Festplatte auswählen..."**, um den Dateiauswahldialog zu öffnen.
-2. **Zielordner angeben:** Legen Sie fest, wo die generierten Symbole gespeichert werden sollen, indem Sie einen Pfad eingeben oder auf das Ordnersymbol klicken.
-3. **Einstellungen konfigurieren:** Wählen Sie Ihre bevorzugten Exportoptionen aus (klassisches Windows `.ico`, moderne Windows Assets oder Android Adaptive Layouts).
-4. **Generieren:** Klicken Sie auf **"Symbole generieren"**. Nach Abschluss des Vorgangs wird eine Benachrichtigung angezeigt. Sie können auf die Benachrichtigung klicken oder den Zielordner öffnen, um die Dateien anzuzeigen.
-
-> [!IMPORTANT]
-> **Ressourcenabhängigkeit:** Die ausführbare Datei `IconForge.exe` benötigt das Verzeichnis `Assets/` mit den internen Anwendungssymbolen im selben Ordner, um die Benutzeroberfläche korrekt zu laden. Stellen Sie vor dem Starten sicher, dass sich der Ordner `Assets/` im selben Verzeichnis wie `IconForge.exe` befindet. Wenn Sie das ZIP-Archiv des Releases heruntergeladen haben, entpacken Sie bitte alle Dateien vollständig vor der Verwendung.
+## Inhaltsverzeichnis
+1. [Erste Schritte](#1-erste-schritte)
+2. [Dateiauswahl & Laden](#2-dateiauswahl--laden)
+3. [Bildfilter & Farbanpassung](#3-bildfilter--farbanpassung)
+4. [Export-Ziele & Formate](#4-export-ziele--formate)
+5. [Echtzeit-Vorschaugitter (Live Preview)](#5-echtzeit-vorschaugitter-live-preview)
+6. [ICO-Extraktion (Reverse Extraction)](#6-ico-extraktion-reverse-extraction)
+7. [System- & Explorer-Integration](#7-system--explorer-integration)
+8. [Einzelne EXE-Datei (Single-File Deployment)](#8-einzelne-exe-datei-single-file-deployment)
 
 ---
 
-## 2. Symbolformate und technische Spezifikationen
+## 1. Erste Schritte
 
-### Klassische Windows .ico-Generierung
-
-Das klassische Windows-Symbolformat (`.ico`) ist ein Container, der mehrere Auflösungen in einer einzigen Datei zusammenfasst. Dies ist wichtig, damit Symbole bei verschiedenen Explorer-Ansichtsoptionen (z. B. Details, Liste, Kacheln, mittel, groß und extra groß) gestochen scharf bleiben.
-
-* **Bündelauflösungen:** `16x16`, `24x24`, `32x32`, `48x48`, `64x64`, `128x128`, `256x256` Pixel.
-* **Mikroschärfungsfilter:** Um zu verhindern, dass niedrige Auflösungen (von `16x16` bis `48x48` Pixel) im Windows Explorer verschwommen oder matschig wirken, wendet IconForge nach der Skalierung mit dem SkiaSharp Lanczos3-Algorithmus automatisch einen benutzerdefinierten Konturschärfungsfilter an.
-
-### Moderne Windows-Assets
-
-Moderne Windows-Apps (UWP- und WinUI 3-Anwendungen) verwenden separate PNG-Dateien, die in ihrem Paketmanifest (`Package.appxmanifest`) deklariert sind. Diese Assets werden je nach DPI-Einstellung des Monitors skaliert.
-
-* **Asset-Vorlagen:** `Square44x44Logo`, `Square150x150Logo`, `StoreLogo`.
-* **Generierte Skalierungen:** `scale-100` (100%), `scale-125` (125%), `scale-150` (150%), `scale-200` (200%) und `scale-400` (400%).
-
-### Android Adaptive & Legacy-Symbole
-
-Android 8.0 (API-Level 26) führte **Adaptive Symbole** (Adaptive Icons) ein, die auf verschiedenen Gerätemodellen unterschiedliche Formen anzeigen können (Kreise, abgerundete Quadrate usw.). Um dies zu unterstützen, verlangt Android, dass Symbole aus separaten Vordergrund- und Hintergrundebenen bestehen.
-
-* **Vordergrundebene (`ic_launcher_foreground.png`):**
-  * Das Quellbild wird automatisch verkleinert und innerhalb einer sicheren Zone zentriert.
-  * **Sicherheitszonen-Regel:** Um zu verhindern, dass das Logo durch Gerätemasken abgeschnitten wird, muss sich das Kernsymbol innerhalb eines zentralen Kreises von 72dp bei einer Gesamtgröße von 108dp befinden. IconForge übernimmt diese Positionierung automatisch.
-* **Hintergrundebene (`ic_launcher_background.png`):**
-  * Sie können eine Hintergrundfarbe mithilfe eines Hex-Codes auswählen (z. B. `#FFFFFF` oder `#3DDC84`), eine vordefinierte Farbe aus den Schnellfarbfeldern wählen oder eine benutzerdefinierte Hintergrundbilddatei (z. B. ein Muster oder eine Textur) auswählen.
-* **Unterstützte Dichten:** Die Ordnerstruktur reicht von `mipmap-mdpi` bis `mipmap-xxxhdpi`.
-* **Legacy-Symbol (`ic_launcher.png`):**
-  * Für ältere Android-Versionen wird automatisch ein rundes Standard-Legacy-Symbol erstellt, indem die Vorder- und Hintergrundebenen kombiniert und eine kreisförmige Maske angewendet werden.
-* **Google Play Console Promo-Symbol:**
-  * Generiert ein hochwertiges PNG-Bild mit `512x512` Pixeln, das in die Entwicklerkonsole hochgeladen werden kann.
+IconForge wird als einzelne, eigenständige ausführbare Datei (`IconForge_v1.0.2_win-x64.exe`) geliefert. Es erfordert keine Installation oder Administratorrechte. Doppelklicken Sie einfach auf die `.exe`-Datei, um die Anwendung zu starten.
 
 ---
 
-## 3. Systemintegration (Explorer-Kontextmenü)
+## 2. Dateiauswahl & Laden
 
-Mit IconForge können Sie eine Verknüpfung direkt im Windows Explorer-Kontextmenü registrieren, sodass Sie mit der rechten Maustaste auf ein beliebiges Bild klicken und sofort Symbole generieren können.
+Sie können Bilddateien über folgende Wege laden:
+* **Drag-and-Drop:** Ziehen Sie eine Datei direkt in den Hauptbereich der Anwendung.
+* **Durchsuchen:** Klicken Sie auf das Ordnersymbol, um eine Datei über den Windows-Dateiauswahldialog zu wählen.
+* **Kontextmenü:** Klicken Sie im Windows Explorer mit der rechten Maustaste auf eine PNG-, SVG- oder ICO-Datei und wählen Sie **"Icons in IconForge generieren"**.
 
-### Registrierungspfad und Berechtigungen
-
-* **Registrierungspfad:** Die Schlüssel werden unter folgendem Pfad hinzugefügt:
-  * `HKEY_CURRENT_USER\Software\Classes\SystemFileAssociations\.png\Shell\IconForge`
-  * `HKEY_CURRENT_USER\Software\Classes\SystemFileAssociations\.svg\Shell\IconForge`
-* **Keine Administratorrechte erforderlich:** Da die Anwendung in den benutzerspezifischen Registrierungs-Hive (`HKEY_CURRENT_USER`) statt in den systemweiten Hive (`HKEY_LOCAL_MACHINE`) schreibt, **benötigen Sie keine Administratorrechte (UAC-Eingabeaufforderung)**, um diese Funktion zu aktivieren oder zu deaktivieren. Sie ist vollständig auf das aktuelle Windows-Benutzerprofil beschränkt.
+### Unterstützte Eingabeformate
+* **PNG (`.png`):** Hochauflösende Rasterbilder (1024x1024 empfohlen).
+* **SVG (`.svg`):** Skalierbare Vektorgrafiken (verlustfreie Schärfe bei allen Auflösungen).
+* **ICO (`.ico`):** Mehrschichtige ICO-Dateien (aktiviert den ICO-Extraktionsmodus).
 
 ---
 
-## 4. Problembehebung bei Windows Defender SmartScreen
+## 3. Bildfilter & Farbanpassung
 
-Wenn Sie IconForge aus dem Quellcode kompilieren oder eine nicht signierte Binärdatei ausführen, blockiert Windows Defender SmartScreen die Ausführung möglicherweise beim ersten Start mit der Warnung: *"Der Computer wurde durch Windows Defender SmartScreen geschützt. Von Windows Defender SmartScreen wurde der Start einer unbekannten App verhindert."*
+Im linken Konfigurationsbereich stehen folgende Filter zur Verfügung:
 
-### Warum passiert das?
-Diese Warnung ist Standard für kostenlose Open-Source-Software, die nicht über ein kostenpflichtiges digitales Codesignaturzertifikat verfügt (das jährlich mehrere hundert Dollar kostet). Dies bedeutet nicht, dass die Anwendung unsicher ist.
+* **Helligkeit (-100 bis +100):** Stufenlose Anpassung der Bildhelligkeit.
+* **Kontrast (-100 bis +100):** Anpassung des Kontrastverhältnisses.
+* **Eckenradius (%) (0 bis 50%):** Abrundung der Icon-Ecken.
+* **Abstand (%) (0 bis 40%):** Innerer Abstand des Logos zum Icon-Rand.
+* **Graustufenmodus:** Konvertiert Farben in Graustufen.
+* **Farben invertieren:** Invertiert die RGB-Farbkanäle.
+* **Schlagschatten (Drop Shadow):** Fügt einen weichen Schatten um die Logo-Silhouette hinzu.
+* **Farbtönung (SVG Tint):** Eingabe eines Hex-Farbcodes (z. B. `#0078D4` oder `#3DDC84`) zum Einfärben von Vektor-Icons.
 
-### So umgehen Sie die Warnung:
-1. Klicken Sie im SmartScreen-Fenster auf den Link **"Weitere Informationen" (oder "More info").**
-2. Der Name des Herausgebers wird als *Unbekannter Herausgeber* angezeigt.
-3. Klicken Sie auf die Schaltfläche **"Trotzdem ausführen" (oder "Run anyway"),** die unten im Fenster angezeigt wird.
-4. Die Anwendung startet normal und die Warnung wird bei zukünftigen Starts nicht mehr angezeigt.
+---
+
+## 4. Export-Ziele & Formate
+
+Wählen Sie die gewünschten Optionen im rechten Bedienfeld:
+
+* **Windows Klassisch `.ico`:** Erstellt eine `app_icon.ico`-Datei mit den Auflösungen `16x16`, `24x24`, `32x32`, `48x48`, `64x64`, `128x128` und `256x256` Pixel inklusive Mikro-Schärfung.
+* **Windows Modern Assets:** Generiert einzelne PNG-Logos für WinUI/UWP-Manifeste in allen Systemskalierungen (`scale-100` bis `scale-400`).
+* **Web & Favicon Pack:** Erstellt `favicon.ico`, `favicon-16x16.png`, `favicon-32x32.png`, `apple-touch-icon.png` (180x180), `android-chrome-*.png` und `site.webmanifest`.
+* **macOS App Icon (`.icns`):** Erstellt ein binäres Apple `.icns`-Container-Paket.
+* **Android Adaptive & Legacy Icons:** Erstellt Ebenen `Foreground.png` (Safe-Zone 72dp) und `Background.png`, Mipmap-Ordner (`mdpi` bis `xxxhdpi`), rundes `ic_launcher.png` und Google Play 512x512 Grafiken.
+
+---
+
+## 5. Echtzeit-Vorschaugitter (Live Preview)
+
+Das Vorschaugitter auf der rechten Seite zeigt das Icon in Echtzeit in den Auflösungen `16x16`, `32x32`, `48x48` und `256x256` Pixel an.
+
+### Hintergrundmodi
+1. **Transparent:** Klassisches Schachbrettmuster.
+2. **Dunkel:** `#1F1F1F` dunkler Hintergrund (Windows 11 Dark Taskbar).
+3. **Hell:** `#F3F3F3` heller Hintergrund.
+4. **Android/Projekt-Hintergrund:** Die in den Android-Einstellungen gewählte Hintergrundfarbe.
+
+---
+
+## 6. ICO-Extraktion (Reverse Extraction)
+
+Beim Laden einer `.ico`-Datei werden alle enthaltenen PNG/BMP-Ebenen erkannt und können per Klick auf **"Alle Ebenen als PNG entpacken"** einzeln gespeichert werden.
+
+---
+
+## 7. System- & Explorer-Integration
+
+* **Windows Explorer Kontextmenü:** Integration unter `HKEY_CURRENT_USER` ohne Administratorrechte.
+* **Benachrichtigungen:** Toast-Benachrichtigung nach Fertigstellung mit Button zum Öffnen des Zielordners.
+
+---
+
+## 8. Einzelne EXE-Datei (Single-File Deployment)
+
+IconForge v1.0.2 bettet alle MRT Core-Ressourcentabellen (`resources.pri`) direkt in die ausführbare Datei ein. Beim Start wird `resources.pri` automatisch extrahiert. Dadurch läuft `IconForge_v1.0.2_win-x64.exe` überall ohne Zusatzordner.
