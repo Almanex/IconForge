@@ -86,6 +86,7 @@
   <Target Name="BundlePriInSingleFile" BeforeTargets="GenerateSingleFileBundle">
     <ItemGroup>
       <ResolvedFileToPublish Include="$(TargetDir)IconForge.pri" RelativePath="resources.pri" Condition="Exists('$(TargetDir)IconForge.pri')" />
+      <ResolvedFileToPublish Include="$(TargetDir)IconForge.pri" RelativePath="IconForge.pri" Condition="Exists('$(TargetDir)IconForge.pri')" />
     </ItemGroup>
   </Target>
 </Project>

@@ -39,44 +39,58 @@ public partial class App : Application
         {
             string baseDir = System.AppContext.BaseDirectory;
             string targetPriPath = System.IO.Path.Combine(baseDir, "resources.pri");
-            
-            if (System.IO.File.Exists(targetPriPath))
+            string processName = System.IO.Path.GetFileNameWithoutExtension(System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName ?? "IconForge");
+            string exeNamePriPath = System.IO.Path.Combine(baseDir, $"{processName}.pri");
+
+            if (System.IO.File.Exists(targetPriPath) && System.IO.File.Exists(exeNamePriPath))
             {
                 return;
             }
 
-            // 1. Try embedded manifest resource
-            using (var stream = typeof(App).Assembly.GetManifestResourceStream("IconForge.resources.pri"))
+            // 1. Get the directory where .NET 8 single-file bundle extracted native assemblies (e.g. Microsoft.UI.Xaml.dll)
+            string? tempExtractDir = System.IO.Path.GetDirectoryName(typeof(Microsoft.UI.Xaml.Application).Assembly.Location);
+            if (!string.IsNullOrEmpty(tempExtractDir))
             {
-                if (stream != null)
+                string sourcePri = System.IO.Path.Combine(tempExtractDir, "resources.pri");
+                if (!System.IO.File.Exists(sourcePri))
                 {
-                    using (var fileStream = System.IO.File.Create(targetPriPath))
-                    {
-                        stream.CopyTo(fileStream);
-                        return;
-                    }
+                    sourcePri = System.IO.Path.Combine(tempExtractDir, "IconForge.pri");
                 }
-            }
 
-            // 2. Try .NET SingleFile self-extracted directory
-            string asmLocation = typeof(App).Assembly.Location;
-            if (!string.IsNullOrEmpty(asmLocation))
-            {
-                string asmDir = System.IO.Path.GetDirectoryName(asmLocation)!;
-                string sourcePriPath = System.IO.Path.Combine(asmDir, "resources.pri");
-                if (System.IO.File.Exists(sourcePriPath) && sourcePriPath != targetPriPath)
+                if (System.IO.File.Exists(sourcePri))
                 {
-                    System.IO.File.Copy(sourcePriPath, targetPriPath, true);
+                    if (!System.IO.File.Exists(targetPriPath))
+                    {
+                        System.IO.File.Copy(sourcePri, targetPriPath, true);
+                    }
+                    if (!System.IO.File.Exists(exeNamePriPath))
+                    {
+                        System.IO.File.Copy(sourcePri, exeNamePriPath, true);
+                    }
                     return;
                 }
             }
 
-            // 3. Fallback: search temp directory for bundled resources.pri
-            string tempDir = System.IO.Path.GetTempPath();
-            string[] foundFiles = System.IO.Directory.GetFiles(tempDir, "resources.pri", System.IO.SearchOption.AllDirectories);
-            if (foundFiles.Length > 0 && System.IO.File.Exists(foundFiles[0]))
+            // 2. Try Embedded Resource in Assembly manifest
+            var asm = typeof(App).Assembly;
+            string[] resourceNames = asm.GetManifestResourceNames();
+            foreach (var rName in resourceNames)
             {
-                System.IO.File.Copy(foundFiles[0], targetPriPath, true);
+                if (rName.EndsWith(".pri", System.StringComparison.OrdinalIgnoreCase))
+                {
+                    using (var stream = asm.GetManifestResourceStream(rName))
+                    {
+                        if (stream != null)
+                        {
+                            using (var fs = System.IO.File.Create(targetPriPath))
+                            {
+                                stream.CopyTo(fs);
+                            }
+                            try { System.IO.File.Copy(targetPriPath, exeNamePriPath, true); } catch { }
+                            return;
+                        }
+                    }
+                }
             }
         }
         catch
