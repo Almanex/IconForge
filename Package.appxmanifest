@@ -1,23 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <Package
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
   xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+  xmlns:desktop4="http://schemas.microsoft.com/appx/manifest/desktop/windows10/4"
+  xmlns:desktop5="http://schemas.microsoft.com/appx/manifest/desktop/windows10/5"
   xmlns:systemai="http://schemas.microsoft.com/appx/manifest/systemai/windows10"
-  IgnorableNamespaces="uap rescap systemai">
+  IgnorableNamespaces="uap rescap desktop4 desktop5 systemai">
 
   <Identity
-    Name="D9074F32-1B11-411B-B546-76335AD2E441"
-    Publisher="CN=AppPublisher"
-    Version="1.0.0.0" />
+    Name="Almanex.IconForge"
+    Publisher="CN=Almanex"
+    Version="1.0.3.0" />
 
   <mp:PhoneIdentity PhoneProductId="D9074F32-1B11-411B-B546-76335AD2E441" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>IconForge</DisplayName>
-    <PublisherDisplayName>AppPublisher</PublisherDisplayName>
+    <PublisherDisplayName>Almanex</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -27,7 +29,9 @@
   </Dependencies>
 
   <Resources>
-    <Resource Language="x-generate"/>
+    <Resource Language="en-US"/>
+    <Resource Language="ru-RU"/>
+    <Resource Language="de-DE"/>
   </Resources>
 
   <Applications>
@@ -36,18 +40,33 @@
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
         DisplayName="IconForge"
-        Description="IconForge"
+        Description="IconForge — Native multi-format icon generator for Windows, Web, macOS and Android"
         BackgroundColor="transparent"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" />
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
+
+      <Extensions>
+        <desktop4:Extension Category="windows.fileExplorerContextMenu">
+          <desktop4:FileExplorerContextMenu>
+            <desktop5:ItemType Target=".png">
+              <desktop5:Verb Id="IconForgePng" Clsid="A7C5F942-8D3E-4B0F-9C12-3D7E8F9A1B2C" AppliesTo=".png" />
+            </desktop5:ItemType>
+            <desktop5:ItemType Target=".svg">
+              <desktop5:Verb Id="IconForgeSvg" Clsid="A7C5F942-8D3E-4B0F-9C12-3D7E8F9A1B2C" AppliesTo=".svg" />
+            </desktop5:ItemType>
+            <desktop5:ItemType Target=".ico">
+              <desktop5:Verb Id="IconForgeIco" Clsid="A7C5F942-8D3E-4B0F-9C12-3D7E8F9A1B2C" AppliesTo=".ico" />
+            </desktop5:ItemType>
+          </desktop4:FileExplorerContextMenu>
+        </desktop4:Extension>
+      </Extensions>
     </Application>
   </Applications>
 
   <Capabilities>
     <rescap:Capability Name="runFullTrust" />
-    <systemai:Capability Name="systemAIModels"/>
   </Capabilities>
 </Package>

@@ -691,6 +691,34 @@ namespace IconForge
             }
         }
 
+        private async void OpenFolderButton_Click(object sender, RoutedEventArgs e)
+        {
+            string path = OutputDirTextBox.Text.Trim();
+            if (string.IsNullOrEmpty(path)) return;
+
+            try
+            {
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                var folder = await Windows.Storage.StorageFolder.GetFolderFromPathAsync(path);
+                if (folder != null)
+                {
+                    await Windows.System.Launcher.LaunchFolderAsync(folder);
+                }
+                else
+                {
+                    System.Diagnostics.Process.Start("explorer.exe", path);
+                }
+            }
+            catch
+            {
+                try { System.Diagnostics.Process.Start("explorer.exe", path); } catch { }
+            }
+        }
+
         private async void AboutButton_Click(object sender, RoutedEventArgs e)
         {
             if (XamlRoot == null) return;
@@ -704,8 +732,8 @@ namespace IconForge
             string desc = _resourceLoader.GetString("AboutDescription");
             if (string.IsNullOrEmpty(desc)) desc = "Нативный мультиформатный генератор иконных пакетов для Windows, Web, macOS и Android.";
 
-            string author = _resourceLoader.GetString("AboutAuthor");
-            if (string.IsNullOrEmpty(author)) author = "Разработчик: Almanex";
+            string authorPrefix = _resourceLoader.GetString("AboutAuthor");
+            if (string.IsNullOrEmpty(authorPrefix)) authorPrefix = "Разработчик:";
 
             var contentStack = new StackPanel { Spacing = 12, Margin = new Thickness(0, 8, 0, 0) };
 
@@ -724,31 +752,51 @@ namespace IconForge
                 TextWrapping = TextWrapping.Wrap
             };
 
-            var authorText = new TextBlock
+            // Harmonious Developer row with inline icon & link
+            var devStack = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 6, VerticalAlignment = VerticalAlignment.Center };
+            
+            string labelText = authorPrefix.Contains(':') ? authorPrefix.Split(':')[0] + ":" : authorPrefix;
+            var devPrefix = new TextBlock
             {
-                Text = author,
+                Text = labelText,
                 Style = (Microsoft.UI.Xaml.Style)Application.Current.Resources["CaptionTextBlockStyle"],
-                Foreground = (Brush)Application.Current.Resources["TextFillColorSecondaryBrush"]
+                Foreground = (Brush)Application.Current.Resources["TextFillColorSecondaryBrush"],
+                VerticalAlignment = VerticalAlignment.Center
             };
 
-            var gitHubButton = new HyperlinkButton
+            var gitHubIcon = new FontIcon
             {
-                Content = "GitHub: https://github.com/Almanex/IconForge",
-                NavigateUri = new Uri("https://github.com/Almanex/IconForge"),
-                Margin = new Thickness(0, 4, 0, 0)
+                Glyph = "\uE71B", // GitHub / Code icon
+                FontSize = 14,
+                VerticalAlignment = VerticalAlignment.Center,
+                Foreground = (Brush)Application.Current.Resources["AccentFillColorDefaultBrush"]
             };
+
+            var gitHubLink = new HyperlinkButton
+            {
+                Content = "Almanex",
+                NavigateUri = new Uri("https://github.com/Almanex/IconForge"),
+                Padding = new Thickness(2, 0, 2, 0),
+                VerticalAlignment = VerticalAlignment.Center,
+                FontWeight = Microsoft.UI.Text.FontWeights.Medium
+            };
+
+            devStack.Children.Add(devPrefix);
+            devStack.Children.Add(gitHubIcon);
+            devStack.Children.Add(gitHubLink);
 
             contentStack.Children.Add(verText);
             contentStack.Children.Add(descText);
-            contentStack.Children.Add(authorText);
-            contentStack.Children.Add(gitHubButton);
+            contentStack.Children.Add(devStack);
 
             var dialog = new ContentDialog
             {
                 Title = title,
                 Content = contentStack,
                 CloseButtonText = "ОК",
-                XamlRoot = XamlRoot
+                XamlRoot = XamlRoot,
+                RequestedTheme = ActualTheme,
+                Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style
             };
 
             try

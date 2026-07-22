@@ -169,6 +169,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 
                                 <TextBox 
@@ -186,6 +187,16 @@
                                     VerticalAlignment="Center"
                                     ToolTipService.ToolTip="Выбрать папку">
                                     <FontIcon Glyph="&#xED25;" />
+                                </Button>
+
+                                <Button 
+                                    x:Name="OpenFolderButton"
+                                    x:Uid="OpenFolderButton"
+                                    Grid.Column="2" 
+                                    Click="OpenFolderButton_Click"
+                                    VerticalAlignment="Center"
+                                    ToolTipService.ToolTip="Открыть папку в Explorer">
+                                    <FontIcon Glyph="&#xE8DA;" />
                                 </Button>
                             </Grid>
                         </StackPanel>

@@ -73,6 +73,8 @@
 
   <!-- Publish Properties -->
   <PropertyGroup>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <AppxDefaultResourceQualifiers>Language=en-US;ru-RU;de-DE</AppxDefaultResourceQualifiers>
     <PublishReadyToRun Condition="'$(Configuration)' == 'Debug'">False</PublishReadyToRun>
     <PublishReadyToRun Condition="'$(Configuration)' != 'Debug'">True</PublishReadyToRun>
     <PublishTrimmed Condition="'$(Configuration)' == 'Debug'">False</PublishTrimmed>
