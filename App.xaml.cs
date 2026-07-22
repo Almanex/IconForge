@@ -27,16 +27,60 @@ public partial class App : Application
     /// Initializes the singleton application object.  This is the first line of authored code
     /// executed, and as such is the logical equivalent of main() or WinMain().
     /// </summary>
+    [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
+    private static extern int MessageBoxW(IntPtr hWnd, string text, string caption, uint type);
+
+    private static void LogAndShowException(Exception ex, string context)
+    {
+        string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string logPath = System.IO.Path.Combine(desktopPath, "SnapIcon_Crash_Log.txt");
+        string message = $"Context: {context}\nException: {ex.GetType().Name}\nMessage: {ex.Message}\nStackTrace:\n{ex.StackTrace}";
+        if (ex.InnerException != null)
+        {
+            message += $"\n\nInner Exception: {ex.InnerException.GetType().Name}\nMessage: {ex.InnerException.Message}\nStackTrace:\n{ex.InnerException.StackTrace}";
+        }
+        try
+        {
+            System.IO.File.WriteAllText(logPath, message);
+        }
+        catch {}
+
+        MessageBoxW(IntPtr.Zero, $"{message}\n\nThis crash report was also saved to your Desktop as 'SnapIcon_Crash_Log.txt'.", "SnapIcon Startup Crash", 0x10);
+    }
+
     public App()
     {
+        AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+        {
+            if (e.ExceptionObject is Exception ex)
+            {
+                LogAndShowException(ex, "AppDomain Unhandled Exception");
+            }
+        };
+
         try
         {
             Microsoft.Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "";
         }
         catch { }
 
-        EnsureResourcesPriExtracted();
-        InitializeComponent();
+        try
+        {
+            EnsureResourcesPriExtracted();
+        }
+        catch (Exception ex)
+        {
+            LogAndShowException(ex, "EnsureResourcesPriExtracted");
+        }
+
+        try
+        {
+            InitializeComponent();
+        }
+        catch (Exception ex)
+        {
+            LogAndShowException(ex, "InitializeComponent");
+        }
     }
 
     private static bool IsPackaged()
