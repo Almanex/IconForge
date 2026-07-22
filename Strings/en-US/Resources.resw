@@ -242,7 +242,40 @@
   <data name="PreviewGridHeader.Text" xml:space="preserve">
     <value>Multi-Size Live Preview</value>
   </data>
-  <data name="ExtractBtn.Content" xml:space="preserve">
-    <value>Extract All Frames to PNG</value>
+  <data name="CornerRadiusLabel.Text" xml:space="preserve">
+    <value>Corner Radius (%)</value>
+  </data>
+  <data name="PaddingLabel.Text" xml:space="preserve">
+    <value>Padding (%)</value>
+  </data>
+  <data name="DropShadowLabel.Content" xml:space="preserve">
+    <value>Drop Shadow</value>
+  </data>
+  <data name="TintColorTextBox.PlaceholderText" xml:space="preserve">
+    <value>Hex #RRGGBB (optional)</value>
+  </data>
+  <data name="ContextMenuToggle.Header" xml:space="preserve">
+    <value>Windows Context Menu</value>
+  </data>
+  <data name="SysIntegrationHeader.Text" xml:space="preserve">
+    <value>System Integration</value>
+  </data>
+  <data name="AboutBtnText.Text" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="AboutTitle" xml:space="preserve">
+    <value>About IconForge</value>
+  </data>
+  <data name="AboutVersion" xml:space="preserve">
+    <value>Version 1.0.2 (WinUI 3 / .NET 8)</value>
+  </data>
+  <data name="AboutDescription" xml:space="preserve">
+    <value>Native multi-format icon package generator for Windows, Web, macOS, and Android.</value>
+  </data>
+  <data name="AboutAuthor" xml:space="preserve">
+    <value>Developer: Almanex</value>
+  </data>
+  <data name="ContextMenuItemTitle" xml:space="preserve">
+    <value>Generate icons in IconForge</value>
   </data>
 </root>

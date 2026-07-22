@@ -313,7 +313,9 @@ namespace IconForge
             {
                 if (ContextMenuToggle.IsOn)
                 {
-                    ShellIntegration.Register();
+                    string title = _resourceLoader.GetString("ContextMenuItemTitle");
+                    if (string.IsNullOrEmpty(title)) title = "Сгенерировать иконки в IconForge";
+                    ShellIntegration.Register(title);
                 }
                 else
                 {
@@ -687,6 +689,65 @@ namespace IconForge
             {
                 ShowErrorDialog("Ошибка извлечения", ex.Message);
             }
+        }
+
+        private async void AboutButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (XamlRoot == null) return;
+
+            string title = _resourceLoader.GetString("AboutTitle");
+            if (string.IsNullOrEmpty(title)) title = "О программе IconForge";
+
+            string version = _resourceLoader.GetString("AboutVersion");
+            if (string.IsNullOrEmpty(version)) version = "Версия 1.0.2 (WinUI 3 / .NET 8)";
+
+            string desc = _resourceLoader.GetString("AboutDescription");
+            if (string.IsNullOrEmpty(desc)) desc = "Нативный мультиформатный генератор иконных пакетов для Windows, Web, macOS и Android.";
+
+            string author = _resourceLoader.GetString("AboutAuthor");
+            if (string.IsNullOrEmpty(author)) author = "Разработчик: Almanex";
+
+            var contentStack = new StackPanel { Spacing = 12, Margin = new Thickness(0, 8, 0, 0) };
+
+            var verText = new TextBlock
+            {
+                Text = version,
+                Style = (Microsoft.UI.Xaml.Style)Application.Current.Resources["BodyTextBlockStyle"],
+                FontWeight = Microsoft.UI.Text.FontWeights.SemiBold
+            };
+
+            var descText = new TextBlock
+            {
+                Text = desc,
+                Style = (Microsoft.UI.Xaml.Style)Application.Current.Resources["CaptionTextBlockStyle"],
+                Foreground = (Brush)Application.Current.Resources["TextFillColorSecondaryBrush"],
+                TextWrapping = TextWrapping.Wrap
+            };
+
+            var authorText = new TextBlock
+            {
+                Text = author,
+                Style = (Microsoft.UI.Xaml.Style)Application.Current.Resources["CaptionTextBlockStyle"],
+                Foreground = (Brush)Application.Current.Resources["TextFillColorSecondaryBrush"]
+            };
+
+            contentStack.Children.Add(verText);
+            contentStack.Children.Add(descText);
+            contentStack.Children.Add(authorText);
+
+            var dialog = new ContentDialog
+            {
+                Title = title,
+                Content = contentStack,
+                CloseButtonText = "ОК",
+                XamlRoot = XamlRoot
+            };
+
+            try
+            {
+                await dialog.ShowAsync();
+            }
+            catch { }
         }
     }
 }

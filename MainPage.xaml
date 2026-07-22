@@ -35,7 +35,15 @@
                     Margin="0,4,0,0" />
             </StackPanel>
             
-            <Image x:Name="AppLogoImage" Grid.Column="1" Height="40" Width="40" VerticalAlignment="Center" />
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
+                <Button x:Name="AboutButton" Click="AboutButton_Click" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <FontIcon Glyph="&#xE946;" FontSize="14" />
+                        <TextBlock x:Uid="AboutBtnText" Text="О программе" />
+                    </StackPanel>
+                </Button>
+                <Image x:Name="AppLogoImage" Height="40" Width="40" VerticalAlignment="Center" />
+            </StackPanel>
         </Grid>
 
         <!-- Main Workspace -->
@@ -183,7 +191,73 @@
                         </StackPanel>
                     </Border>
 
-                    <!-- 3. Android Customization Card -->
+                    <!-- 3. Image Filters & Styling Card -->
+                    <Border 
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8">
+                        
+                        <StackPanel Padding="16" Spacing="12">
+                            <TextBlock x:Uid="FiltersHeader" Text="Фильтры и коррекция цвета" Style="{ThemeResource SubtitleTextBlockStyle}" FontWeight="Medium" />
+                            
+                            <!-- Brightness -->
+                            <StackPanel Spacing="2">
+                                <Grid>
+                                    <TextBlock x:Uid="BrightnessLabel" Text="Яркость" Style="{ThemeResource CaptionTextBlockStyle}" />
+                                    <TextBlock x:Name="BrightnessValueText" Text="0" Style="{ThemeResource CaptionTextBlockStyle}" HorizontalAlignment="Right" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                                </Grid>
+                                <Slider x:Name="BrightnessSlider" Minimum="-100" Maximum="100" Value="0" ValueChanged="FilterSlider_ValueChanged" />
+                            </StackPanel>
+
+                            <!-- Contrast -->
+                            <StackPanel Spacing="2">
+                                <Grid>
+                                    <TextBlock x:Uid="ContrastLabel" Text="Контраст" Style="{ThemeResource CaptionTextBlockStyle}" />
+                                    <TextBlock x:Name="ContrastValueText" Text="0" Style="{ThemeResource CaptionTextBlockStyle}" HorizontalAlignment="Right" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                                </Grid>
+                                <Slider x:Name="ContrastSlider" Minimum="-100" Maximum="100" Value="0" ValueChanged="FilterSlider_ValueChanged" />
+                            </StackPanel>
+
+                            <!-- Corner Radius & Padding -->
+                            <Grid ColumnSpacing="12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Spacing="2">
+                                    <TextBlock x:Uid="CornerRadiusLabel" Text="Скругление (%)" Style="{ThemeResource CaptionTextBlockStyle}" />
+                                    <Slider x:Name="CornerRadiusSlider" Minimum="0" Maximum="50" Value="0" ValueChanged="FilterSlider_ValueChanged" />
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Spacing="2">
+                                    <TextBlock x:Uid="PaddingLabel" Text="Отступ (%)" Style="{ThemeResource CaptionTextBlockStyle}" />
+                                    <Slider x:Name="PaddingSlider" Minimum="0" Maximum="40" Value="0" ValueChanged="FilterSlider_ValueChanged" />
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- Toggles -->
+                            <StackPanel Spacing="6">
+                                <CheckBox x:Name="GrayscaleCheckBox" x:Uid="GrayscaleLabel" Content="Черно-белый режим" Click="FilterOption_Changed" />
+                                <CheckBox x:Name="InvertCheckBox" x:Uid="InvertLabel" Content="Инверсия цветов" Click="FilterOption_Changed" />
+                                <CheckBox x:Name="DropShadowCheckBox" x:Uid="DropShadowLabel" Content="Тень (Drop Shadow)" Click="FilterOption_Changed" />
+                            </StackPanel>
+
+                            <!-- Tint Color -->
+                            <StackPanel Spacing="4">
+                                <TextBlock x:Uid="TintColorLabel" Text="Цветовой оттенок (SVG Tint)" Style="{ThemeResource CaptionTextBlockStyle}" />
+                                <Grid ColumnSpacing="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Border x:Name="TintColorPreview" Width="28" Height="28" CornerRadius="14" Background="Transparent" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" />
+                                    <TextBox Grid.Column="1" x:Name="TintColorTextBox" x:Uid="TintColorTextBox" Text="" PlaceholderText="Hex #RRGGBB (опционально)" TextChanged="TintColorTextBox_TextChanged" />
+                                </Grid>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- 4. Android Customization Card -->
                     <Border 
                         Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                         BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
@@ -246,72 +320,6 @@
                                     <Button x:Name="BrowseBgImageButton" Grid.Column="1" Click="BrowseBgImageButton_Click">
                                         <FontIcon Glyph="&#xE8E5;" />
                                     </Button>
-                                </Grid>
-                            </StackPanel>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- 3.5 Image Filters & Styling Card -->
-                    <Border 
-                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                        BorderThickness="1"
-                        CornerRadius="8">
-                        
-                        <StackPanel Padding="16" Spacing="12">
-                            <TextBlock x:Uid="FiltersHeader" Text="Фильтры и коррекция цвета" Style="{ThemeResource SubtitleTextBlockStyle}" FontWeight="Medium" />
-                            
-                            <!-- Brightness -->
-                            <StackPanel Spacing="2">
-                                <Grid>
-                                    <TextBlock x:Uid="BrightnessLabel" Text="Яркость" Style="{ThemeResource CaptionTextBlockStyle}" />
-                                    <TextBlock x:Name="BrightnessValueText" Text="0" Style="{ThemeResource CaptionTextBlockStyle}" HorizontalAlignment="Right" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
-                                </Grid>
-                                <Slider x:Name="BrightnessSlider" Minimum="-100" Maximum="100" Value="0" ValueChanged="FilterSlider_ValueChanged" />
-                            </StackPanel>
-
-                            <!-- Contrast -->
-                            <StackPanel Spacing="2">
-                                <Grid>
-                                    <TextBlock x:Uid="ContrastLabel" Text="Контраст" Style="{ThemeResource CaptionTextBlockStyle}" />
-                                    <TextBlock x:Name="ContrastValueText" Text="0" Style="{ThemeResource CaptionTextBlockStyle}" HorizontalAlignment="Right" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
-                                </Grid>
-                                <Slider x:Name="ContrastSlider" Minimum="-100" Maximum="100" Value="0" ValueChanged="FilterSlider_ValueChanged" />
-                            </StackPanel>
-
-                            <!-- Corner Radius & Padding -->
-                            <Grid ColumnSpacing="12">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Grid.Column="0" Spacing="2">
-                                    <TextBlock Text="Скругление (%)" Style="{ThemeResource CaptionTextBlockStyle}" />
-                                    <Slider x:Name="CornerRadiusSlider" Minimum="0" Maximum="50" Value="0" ValueChanged="FilterSlider_ValueChanged" />
-                                </StackPanel>
-                                <StackPanel Grid.Column="1" Spacing="2">
-                                    <TextBlock Text="Отступ (%)" Style="{ThemeResource CaptionTextBlockStyle}" />
-                                    <Slider x:Name="PaddingSlider" Minimum="0" Maximum="40" Value="0" ValueChanged="FilterSlider_ValueChanged" />
-                                </StackPanel>
-                            </Grid>
-
-                            <!-- Toggles -->
-                            <StackPanel Spacing="6">
-                                <CheckBox x:Name="GrayscaleCheckBox" x:Uid="GrayscaleLabel" Content="Черно-белый режим" Click="FilterOption_Changed" />
-                                <CheckBox x:Name="InvertCheckBox" x:Uid="InvertLabel" Content="Инверсия цветов" Click="FilterOption_Changed" />
-                                <CheckBox x:Name="DropShadowCheckBox" Content="Тень (Drop Shadow)" Click="FilterOption_Changed" />
-                            </StackPanel>
-
-                            <!-- Tint Color -->
-                            <StackPanel Spacing="4">
-                                <TextBlock x:Uid="TintColorLabel" Text="Цветовой оттенок (SVG Tint)" Style="{ThemeResource CaptionTextBlockStyle}" />
-                                <Grid ColumnSpacing="8">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Border x:Name="TintColorPreview" Width="28" Height="28" CornerRadius="14" Background="Transparent" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" />
-                                    <TextBox Grid.Column="1" x:Name="TintColorTextBox" Text="" PlaceholderText="Hex #RRGGBB (опционально)" TextChanged="TintColorTextBox_TextChanged" />
                                 </Grid>
                             </StackPanel>
                         </StackPanel>
