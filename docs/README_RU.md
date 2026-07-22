@@ -1,6 +1,6 @@
 [README_RU](README_RU.md) | [README_DE](README_DE.md) | [README_EN](../README.md) | [GUIDE_RU](GUIDE_RU.md) | [GUIDE_DE](GUIDE_DE.md) | [GUIDE_EN](GUIDE.md)
 
-# IconForge
+# SnapIcon
 
 *Нативный мультиформатный генератор иконок и утилита обработки изображений для Windows 11*
 
@@ -8,9 +8,9 @@
 [![Platform: Windows](https://img.shields.io/badge/Platform-Windows%2010%20%2F%2011-blue)](https://www.microsoft.com/windows)
 [![Framework: .NET 10.0](https://img.shields.io/badge/Framework-.NET%2010.0-blue)](https://dotnet.microsoft.com/download)
 [![UI: WinUI 3](https://img.shields.io/badge/UI-WinUI%203-blue)](https://learn.microsoft.com/windows/apps/winui/winui3/)
-[![Release: v1.0.4](https://img.shields.io/badge/Release-v1.0.4-brightgreen)](https://github.com/Almanex/IconForge/releases/tag/v1.0.4)
+[![Release: v1.0.4](https://img.shields.io/badge/Release-v1.0.4-brightgreen)](https://github.com/Almanex/SnapIcon/releases/tag/v1.0.4)
 
-IconForge — это легкое нативное приложение для Windows 11, разработанное на языке C# и фреймворке WinUI 3 (Windows App SDK) для целевой платформы .NET 10.0. Приложение поддерживает 3 языка интерфейса (русский, английский, немецкий) и предназначено для автоматической генерации пакетов иконок для Windows (`.ico`, `Assets`), Web (`Favicon Pack`), macOS (`.icns`) и Android (`Adaptive Icons`) из единичных или пакетных исходных файлов PNG, SVG или ICO.
+SnapIcon — это легкое нативное приложение для Windows 11, разработанное на языке C# и фреймворке WinUI 3 (Windows App SDK) для целевой платформы .NET 10.0. Приложение поддерживает 3 языка интерфейса (русский, английский, немецкий) и предназначено для автоматической генерации пакетов иконок для Windows (`.ico`, `Assets`), Web (`Favicon Pack`), macOS (`.icns`) и Android (`Adaptive Icons`) из единичных или пакетных исходных файлов PNG, SVG или ICO.
 
 Подробное пошаговое руководство см. в [Руководстве пользователя](GUIDE_RU.md).
 
@@ -57,8 +57,8 @@ IconForge — это легкое нативное приложение для W
 ### Интеграция с Windows 11 и единый EXE
 
 * **Mica Alt & Dark/Light темы:** Адаптивный Fluent Design материал.
-* **Контекстное меню Проводника:** Пункт "Сгенерировать иконки в IconForge" в классическом и современном меню Windows 11.
-* **Одиночный файл EXE:** Полностью автономный файл (`IconForge.exe`). Таблица ресурсов `resources.pri` встроена внутрь `.exe`.
+* **Контекстное меню Проводника:** Пункт "Сгенерировать иконки в SnapIcon" в классическом и современном меню Windows 11.
+* **Одиночный файл EXE:** Полностью автономный файл (`SnapIcon.exe`). Таблица ресурсов `resources.pri` встроена внутрь `.exe`.
 
 ---
 

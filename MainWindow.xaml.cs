@@ -3,7 +3,7 @@ using Microsoft.UI.Xaml;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace IconForge;
+namespace SnapIcon;
 
 /// <summary>
 /// The application window. This hosts a Frame that displays pages. Add your
@@ -28,10 +28,10 @@ public sealed partial class MainWindow : Window
         SetTitleBar(AppTitleBar);
 
         // Load and set app icon from embedded resources
-        string tempIconPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "IconForge_AppIcon.ico");
+        string tempIconPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "SnapIcon_AppIcon.ico");
         try
         {
-            using (var stream = typeof(MainWindow).Assembly.GetManifestResourceStream("IconForge.Assets.AppIcon.ico"))
+            using (var stream = typeof(MainWindow).Assembly.GetManifestResourceStream("SnapIcon.Assets.AppIcon.ico"))
             {
                 if (stream != null)
                 {

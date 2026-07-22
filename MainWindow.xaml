@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Window
-    x:Class="IconForge.MainWindow"
+    x:Class="SnapIcon.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:IconForge"
+    xmlns:local="using:SnapIcon"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="IconForge"
+    Title="SnapIcon"
     mc:Ignorable="d">
     <Window.SystemBackdrop>
         <MicaBackdrop Kind="BaseAlt" />
@@ -18,7 +18,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TitleBar x:Name="AppTitleBar" Title="IconForge">
+        <TitleBar x:Name="AppTitleBar" Title="SnapIcon" Height="36" Style="{ThemeResource DefaultTitleBarStyle}" Grid.Row="0">
             <TitleBar.IconSource>
                 <ImageIconSource x:Name="TitleBarImageIconSource" />
             </TitleBar.IconSource>

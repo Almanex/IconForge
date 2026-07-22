@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace IconForge.Helpers
+namespace SnapIcon.Helpers
 {
     public static class IcoEncoder
     {

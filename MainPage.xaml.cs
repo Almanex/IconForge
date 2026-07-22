@@ -11,10 +11,10 @@ using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
 using Microsoft.UI.Xaml.Navigation;
 using SkiaSharp;
-using IconForge.Services;
-using IconForge.Helpers;
+using SnapIcon.Services;
+using SnapIcon.Helpers;
 
-namespace IconForge
+namespace SnapIcon
 {
     public sealed partial class MainPage : Page
     {
@@ -33,7 +33,7 @@ namespace IconForge
             // Load embedded logo image
             try
             {
-                using (var stream = typeof(MainPage).Assembly.GetManifestResourceStream("IconForge.Assets.Square44x44Logo.scale-200.png"))
+                using (var stream = typeof(MainPage).Assembly.GetManifestResourceStream("SnapIcon.Assets.Square44x44Logo.scale-200.png"))
                 {
                     if (stream != null)
                     {
@@ -237,7 +237,7 @@ namespace IconForge
             if (string.IsNullOrEmpty(_selectedOutputPath))
             {
                 string dir = Path.GetDirectoryName(firstPath) ?? Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-                _selectedOutputPath = Path.Combine(dir, "IconForge_Batch_Output");
+                _selectedOutputPath = Path.Combine(dir, "SnapIcon_Batch_Output");
                 OutputDirTextBox.Text = _selectedOutputPath;
             }
 
@@ -378,7 +378,7 @@ namespace IconForge
                 if (ContextMenuToggle.IsOn)
                 {
                     string title = _resourceLoader.GetString("ContextMenuItemTitle");
-                    if (string.IsNullOrEmpty(title)) title = "Сгенерировать иконки в IconForge";
+                    if (string.IsNullOrEmpty(title)) title = "Сгенерировать иконки в SnapIcon";
                     ShellIntegration.Register(title);
                 }
                 else
@@ -851,10 +851,10 @@ namespace IconForge
             if (XamlRoot == null) return;
 
             string title = _resourceLoader.GetString("AboutTitle");
-            if (string.IsNullOrEmpty(title)) title = "О программе IconForge";
+            if (string.IsNullOrEmpty(title)) title = "О программе SnapIcon";
 
             string version = _resourceLoader.GetString("AboutVersion");
-            if (string.IsNullOrEmpty(version)) version = "Версия 1.0.3 (WinUI 3 / .NET 10)";
+            if (string.IsNullOrEmpty(version)) version = "Версия 1.0.4 (WinUI 3 / .NET 10)";
 
             string desc = _resourceLoader.GetString("AboutDescription");
             if (string.IsNullOrEmpty(desc)) desc = "Нативный мультиформатный генератор иконных пакетов для Windows, Web, macOS и Android.";
@@ -902,7 +902,7 @@ namespace IconForge
             var gitHubLink = new HyperlinkButton
             {
                 Content = "Almanex",
-                NavigateUri = new Uri("https://github.com/Almanex/IconForge"),
+                NavigateUri = new Uri("https://github.com/Almanex/SnapIcon"),
                 Padding = new Thickness(2, 0, 2, 0),
                 VerticalAlignment = VerticalAlignment.Center,
                 FontWeight = Microsoft.UI.Text.FontWeights.Medium

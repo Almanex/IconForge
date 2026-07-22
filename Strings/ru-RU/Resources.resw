@@ -129,7 +129,7 @@
     <value>Контекстное меню Windows</value>
   </data>
   <data name="ContextMenuSubtext.Text" xml:space="preserve">
-    <value>Добавить пункт 'Сгенерировать иконки в IconForge' в контекстное меню Explorer (Win11: Shift+F10 / Показать доп. параметры)</value>
+    <value>Добавить пункт 'Сгенерировать иконки в SnapIcon' в контекстное меню Explorer (Win11: Shift+F10 / Показать доп. параметры)</value>
   </data>
   <data name="ProgressIdleText.Text" xml:space="preserve">
     <value>Ожидание...</value>
@@ -141,7 +141,7 @@
     <value>Формат не поддерживается</value>
   </data>
   <data name="ErrorUnsupportedFormatMessage" xml:space="preserve">
-    <value>IconForge поддерживает только файлы PNG и SVG в качестве источника.</value>
+    <value>SnapIcon поддерживает файлы PNG, SVG и ICO в качестве источника.</value>
   </data>
   <data name="FileTypeSvg" xml:space="preserve">
     <value>Векторное изображение SVG</value>
@@ -264,10 +264,10 @@
     <value>О программе</value>
   </data>
   <data name="AboutTitle" xml:space="preserve">
-    <value>О программе IconForge</value>
+    <value>О программе SnapIcon</value>
   </data>
   <data name="AboutVersion" xml:space="preserve">
-    <value>Версия 1.0.3 (WinUI 3 / .NET 10)</value>
+    <value>Версия 1.0.4 (WinUI 3 / .NET 10)</value>
   </data>
   <data name="AboutDescription" xml:space="preserve">
     <value>Нативный мультиформатный генератор иконных пакетов для Windows, Web, macOS и Android.</value>
@@ -276,7 +276,7 @@
     <value>Разработчик: Almanex</value>
   </data>
   <data name="ContextMenuItemTitle" xml:space="preserve">
-    <value>Сгенерировать иконки в IconForge</value>
+    <value>Сгенерировать иконки в SnapIcon</value>
   </data>
   <data name="AutoCropCheckBox.Content" xml:space="preserve">
     <value>Авто-обрезка прозрачных полей</value>

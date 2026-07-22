@@ -1,6 +1,6 @@
 [README_RU](docs/README_RU.md) | [README_DE](docs/README_DE.md) | [README_EN](README.md) | [GUIDE_RU](docs/GUIDE_RU.md) | [GUIDE_DE](docs/GUIDE_DE.md) | [GUIDE_EN](docs/GUIDE.md)
 
-# IconForge
+# SnapIcon
 
 *Native multi-format icon generator and image processing utility for Windows 11*
 
@@ -8,9 +8,9 @@
 [![Platform: Windows](https://img.shields.io/badge/Platform-Windows%2010%20%2F%2011-blue)](https://www.microsoft.com/windows)
 [![Framework: .NET 10.0](https://img.shields.io/badge/Framework-.NET%2010.0-blue)](https://dotnet.microsoft.com/download)
 [![UI: WinUI 3](https://img.shields.io/badge/UI-WinUI%203-blue)](https://learn.microsoft.com/windows/apps/winui/winui3/)
-[![Release: v1.0.4](https://img.shields.io/badge/Release-v1.0.4-brightgreen)](https://github.com/Almanex/IconForge/releases/tag/v1.0.4)
+[![Release: v1.0.4](https://img.shields.io/badge/Release-v1.0.4-brightgreen)](https://github.com/Almanex/SnapIcon/releases/tag/v1.0.4)
 
-IconForge is a lightweight, native Windows 11 application built with C# and WinUI 3 (Windows App SDK) targeting .NET 10.0. Out of the box, it features complete tri-lingual support (English, Russian, German) and is designed for automated generation of icon packages for Windows (`.ico`, `Assets`), Web (`Favicon Pack`), macOS (`.icns`), and Android (`Adaptive Icons`) from single or multiple source images (PNG, SVG, or ICO).
+SnapIcon is a lightweight, native Windows 11 application built with C# and WinUI 3 (Windows App SDK) targeting .NET 10.0. Out of the box, it features complete tri-lingual support (English, Russian, German) and is designed for automated generation of icon packages for Windows (`.ico`, `Assets`), Web (`Favicon Pack`), macOS (`.icns`), and Android (`Adaptive Icons`) from single or multiple source images (PNG, SVG, or ICO).
 
 For a detailed step-by-step walkthrough, see the [User Guide](docs/GUIDE.md).
 
@@ -57,8 +57,8 @@ For a detailed step-by-step walkthrough, see the [User Guide](docs/GUIDE.md).
 ### Windows 11 Integration & Single-File Binary
 
 * **Mica Alt & Dark/Light Theme:** Fluent Design visual material adapting dynamically to system theme.
-* **Explorer Context Menu:** Right-click integration ("Generate icons in IconForge") registered under classic and modern Windows 11 menus.
-* **Single Standalone Executable:** Fully bundled self-contained `.exe` (`IconForge.exe`). All resources are extracted automatically at startup.
+* **Explorer Context Menu:** Right-click integration ("Generate icons in SnapIcon") registered under classic and modern Windows 11 menus.
+* **Single Standalone Executable:** Fully bundled self-contained `.exe` (`SnapIcon.exe`). All resources are extracted automatically at startup.
 
 ---
 
@@ -123,7 +123,7 @@ dotnet run
 ```powershell
 dotnet publish -c Release -r win-x64 --self-contained true
 ```
-This produces a single executable `IconForge.exe` inside `bin/Release/.../publish/`. All MRT Core resource files (`resources.pri`) are bundled inside the `.exe`.
+This produces a single executable `SnapIcon.exe` inside `bin/Release/.../publish/`. All MRT Core resource files (`resources.pri`) are bundled inside the `.exe`.
 
 ---
 

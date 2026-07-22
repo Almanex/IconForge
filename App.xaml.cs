@@ -14,7 +14,7 @@ using Microsoft.UI.Xaml.Shapes;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace IconForge;
+namespace SnapIcon;
 
 /// <summary>
 /// Provides application-specific behavior to supplement the default Application class.
@@ -39,7 +39,7 @@ public partial class App : Application
         {
             string baseDir = System.AppContext.BaseDirectory;
             string targetPriPath = System.IO.Path.Combine(baseDir, "resources.pri");
-            string processName = System.IO.Path.GetFileNameWithoutExtension(System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName ?? "IconForge");
+            string processName = System.IO.Path.GetFileNameWithoutExtension(System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName ?? "SnapIcon");
             string exeNamePriPath = System.IO.Path.Combine(baseDir, $"{processName}.pri");
 
             if (System.IO.File.Exists(targetPriPath) && System.IO.File.Exists(exeNamePriPath))
@@ -47,14 +47,14 @@ public partial class App : Application
                 return;
             }
 
-            // 1. Get the directory where .NET 8 single-file bundle extracted native assemblies (e.g. Microsoft.UI.Xaml.dll)
+            // 1. Get the directory where single-file bundle extracted native assemblies
             string? tempExtractDir = System.IO.Path.GetDirectoryName(typeof(Microsoft.UI.Xaml.Application).Assembly.Location);
             if (!string.IsNullOrEmpty(tempExtractDir))
             {
                 string sourcePri = System.IO.Path.Combine(tempExtractDir, "resources.pri");
                 if (!System.IO.File.Exists(sourcePri))
                 {
-                    sourcePri = System.IO.Path.Combine(tempExtractDir, "IconForge.pri");
+                    sourcePri = System.IO.Path.Combine(tempExtractDir, "SnapIcon.pri");
                 }
 
                 if (System.IO.File.Exists(sourcePri))

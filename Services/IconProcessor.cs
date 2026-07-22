@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using SkiaSharp;
 using Svg.Skia;
-using IconForge.Helpers;
+using SnapIcon.Helpers;
 
-namespace IconForge.Services
+namespace SnapIcon.Services
 {
     public enum ShapeMask
     {
@@ -915,8 +915,8 @@ namespace IconForge.Services
             }
 
             string manifest = @"{
-  ""name"": ""IconForge App"",
-  ""short_name"": ""IconForge"",
+  ""name"": ""SnapIcon App"",
+  ""short_name"": ""SnapIcon"",
   ""icons"": [
     {
       ""src"": ""/android-chrome-192x192.png"",

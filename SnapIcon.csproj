@@ -3,7 +3,8 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
-    <RootNamespace>IconForge</RootNamespace>
+    <RootNamespace>SnapIcon</RootNamespace>
+    <AssemblyName>SnapIcon</AssemblyName>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Assets\AppIcon.ico</ApplicationIcon>
     <Platforms>x86;x64;ARM64</Platforms>
@@ -88,7 +89,7 @@
   <!-- Target to bundle generated PRI file inside single-file executable to prevent crashes when renamed -->
   <Target Name="BundlePriInSingleFile" BeforeTargets="GenerateSingleFileBundle" Condition="'$(PublishSingleFile)' == 'true'">
     <ItemGroup>
-      <ResolvedFileToPublish Include="$(TargetDir)IconForge.pri" RelativePath="resources.pri" Condition="Exists('$(TargetDir)IconForge.pri')" />
+      <ResolvedFileToPublish Include="$(TargetDir)SnapIcon.pri" RelativePath="resources.pri" Condition="Exists('$(TargetDir)SnapIcon.pri')" />
     </ItemGroup>
   </Target>
 </Project>

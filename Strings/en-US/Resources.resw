@@ -264,10 +264,10 @@
     <value>About</value>
   </data>
   <data name="AboutTitle" xml:space="preserve">
-    <value>About IconForge</value>
+    <value>About SnapIcon</value>
   </data>
   <data name="AboutVersion" xml:space="preserve">
-    <value>Version 1.0.3 (WinUI 3 / .NET 10)</value>
+    <value>Version 1.0.4 (WinUI 3 / .NET 10)</value>
   </data>
   <data name="AboutDescription" xml:space="preserve">
     <value>Native multi-format icon package generator for Windows, Web, macOS, and Android.</value>
@@ -276,7 +276,7 @@
     <value>Developer: Almanex</value>
   </data>
   <data name="ContextMenuItemTitle" xml:space="preserve">
-    <value>Generate icons in IconForge</value>
+    <value>Generate icons in SnapIcon</value>
   </data>
   <data name="AutoCropCheckBox.Content" xml:space="preserve">
     <value>Auto-crop transparent margins</value>

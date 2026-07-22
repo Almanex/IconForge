@@ -1,13 +1,13 @@
 using System;
 using Microsoft.Win32;
 
-namespace IconForge.Services
+namespace SnapIcon.Services
 {
     public static class ShellIntegration
     {
         private static readonly string[] Extensions = { ".png", ".svg", ".ico" };
-        private const string SystemAssocKeyPath = @"Software\Classes\SystemFileAssociations\{0}\Shell\IconForge";
-        private const string StarShellKeyPath = @"Software\Classes\*\shell\IconForge";
+        private const string SystemAssocKeyPath = @"Software\Classes\SystemFileAssociations\{0}\Shell\SnapIcon";
+        private const string StarShellKeyPath = @"Software\Classes\*\shell\SnapIcon";
 
         public static bool IsRegistered()
         {
