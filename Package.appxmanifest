@@ -19,7 +19,7 @@
 
   <Properties>
     <DisplayName>SnapIcon</DisplayName>
-    <PublisherDisplayName>Almanex</PublisherDisplayName>
+    <PublisherDisplayName>Almanex Dev</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
