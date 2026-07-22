@@ -21,6 +21,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DefaultItemExcludes>$(DefaultItemExcludes);AppPackages\**</DefaultItemExcludes>
   </PropertyGroup>
 
   <ItemGroup>
