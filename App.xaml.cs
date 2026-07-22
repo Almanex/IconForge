@@ -29,12 +29,35 @@ public partial class App : Application
     /// </summary>
     public App()
     {
+        try
+        {
+            Microsoft.Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "";
+        }
+        catch { }
+
         EnsureResourcesPriExtracted();
         InitializeComponent();
     }
 
+    private static bool IsPackaged()
+    {
+        try
+        {
+            return Windows.ApplicationModel.Package.Current != null;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
     private static void EnsureResourcesPriExtracted()
     {
+        if (IsPackaged())
+        {
+            return;
+        }
+
         try
         {
             string baseDir = System.AppContext.BaseDirectory;
